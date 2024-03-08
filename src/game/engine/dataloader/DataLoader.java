@@ -1,2 +1,4 @@
-package game.engine.dataloader;public class DataLoader {
+package game.engine.dataloader;
+
+public class DataLoader {
 }

@@ -1,8 +1,8 @@
-package game.engine.weapons.factory;
+package game.engine.weapons;
 
 public class WeaponRegistry {
-    private int code;
-    private int price;
+    private final int code;
+    private final int price;
     private int damage;
     private String name;
     private int minRange;
@@ -26,6 +26,46 @@ public class WeaponRegistry {
         this.damage = damage;
         this.name = name;
         this.minRange = minRange;
+        this.maxRange = maxRange;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getMinRange() {
+        return minRange;
+    }
+
+    public void setMinRange(int minRange) {
+        this.minRange = minRange;
+    }
+
+    public int getMaxRange() {
+        return maxRange;
+    }
+
+    public void setMaxRange(int maxRange) {
         this.maxRange = maxRange;
     }
 }
