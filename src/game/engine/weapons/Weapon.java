@@ -11,7 +11,7 @@ abstract public class Weapon {
         this.baseDamage = baseDamage;
     }
 
-    public int getBaseDamage() {
+    public int getDamage() {
         return baseDamage;
     }
 

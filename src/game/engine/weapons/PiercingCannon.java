@@ -1,9 +1,9 @@
 package game.engine.weapons;
 
 public class PiercingCannon extends Weapon {
-
-    private final int WEAPON_CODE= PIERCING_CANON_WEAPON_CODE;
+    public final static int WEAPON_CODE= PIERCING_CANON_WEAPON_CODE;
     public PiercingCannon(int baseDamage) {
         super(baseDamage);
     }
+
 }

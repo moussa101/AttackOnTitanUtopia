@@ -12,4 +12,7 @@ public class WeaponFactory {
         this.weaponShop = weaponShop;
     }
 
+    public HashMap<Integer, WeaponRegistry> getWeaponShop() {
+        return weaponShop;
+    }
 }

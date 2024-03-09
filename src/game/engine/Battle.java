@@ -1,5 +1,6 @@
 package game.engine;
 
+import game.engine.base.Wall;
 import game.engine.lanes.Lane;
 import game.engine.titans.Titan;
 import game.engine.titans.TitanRegistry;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 
 public class Battle {
-    private final int[][] PHASES_APPROACHING_TITANS;
+    private final static int[][] PHASES_APPROACHING_TITANS = new int[1][];
     private final int WALL_BASE_HEALTH = 10000;
     private int numberOfTurns;
     private int resourcesGathered;
@@ -26,12 +27,20 @@ public class Battle {
 
 
     public Battle(int[][] phasesApproachingTitans, WeaponFactory weaponFactory, HashMap<Integer, TitanRegistry> titansArchives, ArrayList<Titan> approachingTitans, PriorityQueue<Lane> lanes, ArrayList<Lane> originalLanes) {
-        PHASES_APPROACHING_TITANS = phasesApproachingTitans;
         this.weaponFactory = weaponFactory;
         this.titansArchives = titansArchives;
         this.approachingTitans = approachingTitans;
         this.lanes = lanes;
         this.originalLanes = originalLanes;
+    }
+
+    private void initializeLanes(int numOfLanes){
+        for (int i = 0; i < numOfLanes; i++) {
+            Wall b = new Wall(WALL_BASE_HEALTH);
+            Lane a = new Lane(b);
+            originalLanes.add(a);
+            lanes.add(a);
+        }
     }
 
     public int[][] getPHASES_APPROACHING_TITANS() {
@@ -109,4 +118,5 @@ public class Battle {
     public ArrayList<Lane> getOriginalLanes() {
         return originalLanes;
     }
+
 }

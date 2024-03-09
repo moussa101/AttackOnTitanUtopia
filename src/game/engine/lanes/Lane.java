@@ -23,4 +23,24 @@ public class Lane implements Comparable<Lane>{
     public int compareTo(@NotNull Lane o) {
         return this.dangerLevel- o.dangerLevel;
     }
+
+    public Wall getLaneWall() {
+        return laneWall;
+    }
+
+    public int getDangerLevel() {
+        return dangerLevel;
+    }
+
+    public void setDangerLevel(int dangerLevel) {
+        this.dangerLevel = dangerLevel;
+    }
+
+    public PriorityQueue<Titan> getTitans() {
+        return titans;
+    }
+
+    public ArrayList<Weapon> getWeapons() {
+        return weapons;
+    }
 }

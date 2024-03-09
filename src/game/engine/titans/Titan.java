@@ -1,17 +1,19 @@
 package game.engine.titans;
 
+import game.engine.interfaces.Attacker;
+import game.engine.interfaces.Mobil;
 import org.jetbrains.annotations.NotNull;
 
-abstract public class Titan implements Comparable<Titan>{
+abstract public class Titan implements Comparable<Titan>, Attacker {
     public static final int PURE_TITAN_CODE = 1;
     public static final int ABNORMAL_TITAN_CODE = 2;
     public static final int ARMORED_TITAN_CODE = 3;
     public static final int COLOSSAL_TITAN_CODE = 4;
-    private int baseHealth;
+    private final int baseHealth;
     private int currentHealth;
     private final int baseDamage;
     private final int heightInMeters;
-    private int distanceFromBase;
+    private final int distanceFromBase;
     private int speed;
     private final int resourcesValue;
     private final int dangerLevel;
@@ -28,25 +30,22 @@ abstract public class Titan implements Comparable<Titan>{
     }
 
 
-
-
     public int getBaseHealth() {
         return baseHealth;
     }
 
-    public void setBaseHealth(int baseHealth) {
-        this.baseHealth = baseHealth;
-    }
 
     public int getCurrentHealth() {
         return currentHealth;
     }
 
     public void setCurrentHealth(int currentHealth) {
+        if(currentHealth<0)
+            currentHealth =0;
         this.currentHealth = currentHealth;
     }
 
-    public int getBaseDamage() {
+    public int getDamage() {
         return baseDamage;
     }
 
@@ -58,9 +57,6 @@ abstract public class Titan implements Comparable<Titan>{
         return distanceFromBase;
     }
 
-    public void setDistanceFromBase(int distanceFromBase) {
-        this.distanceFromBase = distanceFromBase;
-    }
 
     public int getSpeed() {
         return speed;
@@ -74,12 +70,9 @@ abstract public class Titan implements Comparable<Titan>{
         return resourcesValue;
     }
 
-
-
     public int getDangerLevel() {
         return dangerLevel;
     }
-
 
 
 

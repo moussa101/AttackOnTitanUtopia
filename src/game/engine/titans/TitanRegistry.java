@@ -19,4 +19,32 @@ public class TitanRegistry {
         this.resourcesValue = resourcesValue;
         this.dangerLevel = dangerLevel;
     }
+
+    public int getCode() {
+        return code;
+    }
+
+    public int getBaseHealth() {
+        return baseHealth;
+    }
+
+    public int getBaseDamage() {
+        return baseDamage;
+    }
+
+    public int getHeightInMeters() {
+        return heightInMeters;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public int getResourcesValue() {
+        return resourcesValue;
+    }
+
+    public int getDangerLevel() {
+        return dangerLevel;
+    }
 }
