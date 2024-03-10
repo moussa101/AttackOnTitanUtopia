@@ -5,6 +5,7 @@ import game.engine.interfaces.Attackee;
 public class Wall implements Attackee {
   private final int baseHealth;
   private int currentHealth;
+  private int ResourcesValue =-1;
 
     public Wall(int baseHealth) {
         if (baseHealth<0)
@@ -29,6 +30,6 @@ public class Wall implements Attackee {
 
     @Override
     public int getResourcesValue() {
-        return 0;
+        return ResourcesValue;
     }
 }
