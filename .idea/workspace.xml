@@ -5,20 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="i">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Milestone 1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/AttackOnTitanUtopia.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/Battle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/Battle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/base/Wall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/base/Wall.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/dataloader/DataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/dataloader/DataLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/exceptions/InsufficientResourcesException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/exceptions/InsufficientResourcesException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/lanes/Lane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/lanes/Lane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/exceptions/GameActionException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/exceptions/GameActionException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/titans/AbnormalTitan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/titans/AbnormalTitan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/titans/ArmoredTitan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/titans/ArmoredTitan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/titans/PureTitan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/titans/PureTitan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/engine/titans/Titan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/titans/Titan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/engine/titans/TitanRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/titans/TitanRegistry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/engine/weapons/WeaponRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/weapons/WeaponRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/weapons/factory/WeaponFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/weapons/factory/WeaponFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/titans.csv" beforeDir="false" afterPath="$PROJECT_DIR$/titans.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/weapons.csv" beforeDir="false" afterPath="$PROJECT_DIR$/weapons.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +87,6 @@
       <module name="AttackOnTitanUtopia" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="Milestone1PublicTests" />
-      <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -137,6 +130,7 @@
       <workItem from="1710006695717" duration="2233000" />
       <workItem from="1710050757410" duration="4814000" />
       <workItem from="1710056970032" duration="333000" />
+      <workItem from="1710101423048" duration="1418000" />
     </task>
     <task id="LOCAL-00001" summary="i">
       <option name="closed" value="true" />

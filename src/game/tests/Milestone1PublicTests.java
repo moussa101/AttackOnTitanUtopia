@@ -1,3 +1,8 @@
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,8 +17,6 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 
 public class Milestone1PublicTests {
@@ -1845,9 +1848,9 @@ public class Milestone1PublicTests {
 		Object weaponRegistry4 = weaponRegistryConstructor.newInstance(4,75,100,"Proximity Trap");
 		HashMap<Integer, Object> h = new HashMap();
 		h.put(1, (Object) weaponRegistry1);
-		h.put(2, weaponRegistry2);
-		h.put(3, weaponRegistry3);
-		h.put(4, weaponRegistry4);
+		h.put(2, (Object) weaponRegistry2);
+		h.put(3, (Object) weaponRegistry3);
+		h.put(4, (Object) weaponRegistry4);
 		String[] names = {"weaponShop"};
 		Object[] values = {h};
 		testConstructorInitializationWeaponFactory(weaponFactory, names, values);
@@ -2269,10 +2272,10 @@ public class Milestone1PublicTests {
 		Object titanRegistry4 = titanRegistryConstructor.newInstance(4,1000,100,60,5,60,4);
 
 		HashMap<Integer, Object> h = new HashMap();
-		h.put(1, titanRegistry1);
-		h.put(2, titanRegistry2);
-		h.put(3, titanRegistry3);
-		h.put(4, titanRegistry4);
+		h.put(1, (Object) titanRegistry1);
+		h.put(2, (Object) titanRegistry2);
+		h.put(3, (Object) titanRegistry3);
+		h.put(4, (Object) titanRegistry4);
 		testGetterLogic(battle, "titansArchives", h);
 	}
 
@@ -2412,10 +2415,10 @@ public class Milestone1PublicTests {
 		Object weaponRegistry3 = weaponRegistryConstructor.newInstance(3,100,5,"Wall Spread Cannon");
 		Object weaponRegistry4 = weaponRegistryConstructor.newInstance(4,75,100,"Proximity Trap");
 		HashMap<Integer, Object> h = new HashMap();
-		h.put(1, weaponRegistry1);
-		h.put(2, weaponRegistry2);
-		h.put(3, weaponRegistry3);
-		h.put(4, weaponRegistry4);
+		h.put(1, (Object) weaponRegistry1);
+		h.put(2, (Object) weaponRegistry2);
+		h.put(3, (Object) weaponRegistry3);
+		h.put(4, (Object) weaponRegistry4);
 		String[] names = {"weaponShop"};
 		Object[] values = {h};
 		ArrayList<Object> l = new ArrayList<>();
@@ -2444,10 +2447,10 @@ public class Milestone1PublicTests {
 		Object titanRegistry3 = titanRegistryConstructor.newInstance(3,200,85,15,10,30,3);
 		Object titanRegistry4 = titanRegistryConstructor.newInstance(4,1000,100,60,5,60,4);
 		HashMap<Integer, Object> h2 = new HashMap();
-		h2.put(1, titanRegistry1);
-		h2.put(2, titanRegistry2);
-		h2.put(3, titanRegistry3);
-		h2.put(4, titanRegistry4);
+		h2.put(1, (Object) titanRegistry1);
+		h2.put(2, (Object) titanRegistry2);
+		h2.put(3, (Object) titanRegistry3);
+		h2.put(4, (Object) titanRegistry4);
 		ArrayList<Object> l = new ArrayList<>();
 		ArrayList<Object> Olanes = new ArrayList<>();
 		PriorityQueue<Object> lanes = new PriorityQueue();
@@ -2475,10 +2478,10 @@ public class Milestone1PublicTests {
 		Object titanRegistry3 = titanRegistryConstructor.newInstance(3,200,85,15,10,30,3);
 		Object titanRegistry4 = titanRegistryConstructor.newInstance(4,1000,100,60,5,60,4);
 		HashMap<Integer, Object> h2 = new HashMap();
-		h2.put(1, titanRegistry1);
-		h2.put(2, titanRegistry2);
-		h2.put(3, titanRegistry3);
-		h2.put(4, titanRegistry4);
+		h2.put(1, (Object) titanRegistry1);
+		h2.put(2, (Object) titanRegistry2);
+		h2.put(3, (Object) titanRegistry3);
+		h2.put(4, (Object) titanRegistry4);
 		ArrayList<Object> l = new ArrayList<>();
 		ArrayList<Object> Olanes = new ArrayList<>();
 		PriorityQueue<Object> lanes = new PriorityQueue();
@@ -3136,7 +3139,7 @@ public class Milestone1PublicTests {
 
 			Field fd = Class.forName(dataLoaderPath).getDeclaredField("WEAPONS_FILE_NAME");
 			fd.setAccessible(true);
-			assertEquals("weapons.csv", fd.get(null));
+			assertEquals("weapons.csv", ((String)fd.get(null)));
 		} catch (NoSuchFieldException | SecurityException | ClassNotFoundException
 				| IllegalArgumentException | IllegalAccessException  e) {
 			e.printStackTrace();
@@ -3555,7 +3558,7 @@ public class Milestone1PublicTests {
 
 				String n1 = (String) f.get(object);
 				String n2 = (String) f.get(o);
-                assertEquals("incorrect name in readWeaponRegistry", n1, n2);
+				assertTrue("incorrect name in readWeaponRegistry", n1.equals(n2));
 				key++;
 			}
 
@@ -3668,7 +3671,7 @@ public class Milestone1PublicTests {
 		String methodName = "get" + name2;
 
 		if (value.getClass().equals(Boolean.class))
-			methodName = "is" + Character.toUpperCase(c) + name.substring(1);
+			methodName = "is" + Character.toUpperCase(c) + name.substring(1, name.length());
 
 		Method m = createdObject.getClass().getMethod(methodName);
 		assertEquals(
@@ -3718,8 +3721,10 @@ public class Milestone1PublicTests {
 		f.setAccessible(true);
 		Object o= f.get(createdObject);
 		boolean equal = checkDoubleArray(values,(int[][])o );
-        assertTrue("The class " + createdObject.getClass().getSimpleName()
-                + "should initialize the instance variable \"" + name + "\" with {{ 1, 1, 1, 2, 1, 3, 5 },{ 2, 2, 2, 1, 3, 3, 4 },{ 4, 4, 4, 4, 4, 4, 4 } }.", equal);
+		assertEquals(
+				"The class " + createdObject.getClass().getSimpleName()
+				+ "should initialize the instance variable \"" + name + "\" with {{ 1, 1, 1, 2, 1, 3, 5 },{ 2, 2, 2, 1, 3, 3, 4 },{ 4, 4, 4, 4, 4, 4, 4 } }.",
+				true, equal);
 
 	}
 
@@ -3744,9 +3749,13 @@ public class Milestone1PublicTests {
 		}
 		f.setAccessible(true);
 		Object o= f.get(createdObject);
-		boolean equal= value == (int) o;
-        assertTrue("The class " + createdObject.getClass().getSimpleName()
-                + "should initialize the instance variable \"" + name + "\" with 10000.", equal);
+		boolean equal=true;
+		if(value!=(int)o)
+			equal =false;
+		assertEquals(
+				"The class " + createdObject.getClass().getSimpleName()
+				+ "should initialize the instance variable \"" + name + "\" with 10000.",
+				true, equal);
 
 	}
 
@@ -3875,7 +3884,8 @@ public class Milestone1PublicTests {
 		assertTrue(aClass.getSimpleName() + " class should have " + methodName + " method that takes one "
 				+ inputType.getSimpleName() + " parameter.", found);
 
-        assertEquals("Incorrect return type for " + methodName + " method in " + aClass.getSimpleName() + ".", m.getReturnType(), Void.TYPE);
+		assertTrue("Incorrect return type for " + methodName + " method in " + aClass.getSimpleName() + ".",
+				m.getReturnType().equals(Void.TYPE));
 
 	}
 
@@ -3926,8 +3936,9 @@ public class Milestone1PublicTests {
 			thrown = true;
 		}
 
-        assertFalse("Method " + methodName + " should have the following set of parameters : " + Arrays.toString(parameters), thrown);
-        assertEquals("wrong return type", m.getReturnType(), returnType);
+		assertTrue("Method " + methodName + " should have the following set of parameters : " + Arrays.toString(parameters),
+				!thrown);
+		assertTrue("wrong return type",m.getReturnType().equals(returnType));
 
 	}
 
@@ -4041,7 +4052,7 @@ public class Milestone1PublicTests {
 			m = curr.getDeclaredMethod(MethodName, setType);
 		}
 		catch(NoSuchMethodException e) {
-            fail("No such method");
+			assertTrue("No such method",false);
 		}
 		m.invoke(createdObject, setValue);
 		if(f.getType().equals(int.class) && (int)setValue < 0 && varName.equals("currentHealth")) 
@@ -4079,14 +4090,15 @@ public class Milestone1PublicTests {
 
 		Method m = createdObject.getClass().getDeclaredMethod(methodName);
 		m.invoke(createdObject);
-        assertEquals("The method \"" + methodName
-                + "\" in class Character should return the correct value of variable \"" + varName + "\".", m.invoke(createdObject), expectedValue);
+		assertTrue("The method \"" + methodName
+				+ "\" in class Character should return the correct value of variable \"" + varName + "\"."
+				, m.invoke(createdObject).equals(expectedValue));
 	}
 
 	private void testSetterMethodIsAbsentInClass(Class aClass, String methodName) {
 		Method[] methods = aClass.getDeclaredMethods();
 		String varName = methodName.substring(3,4).toLowerCase() + methodName.substring(4);
-        assertFalse(varName + "should not have a setter", containsMethodName(methods, methodName));
+		assertTrue(varName + "should not have a setter", !containsMethodName(methods, methodName));
 	}
 
 	private void testSetterMethodExistInClass(Class aClass, String methodName, Class setType) {
@@ -4104,10 +4116,10 @@ public class Milestone1PublicTests {
 		catch(NoSuchMethodException e) {
 			thrown = true;
 		}
-        assertFalse(methodName + " method should take a parameter of type : " + setType, thrown);
+		assertTrue(methodName + " method should take a parameter of type : " + setType, !thrown);
 
 		//finally check if it is void
-        assertEquals("this method should be void", m.getReturnType(), void.class);
+		assertTrue("this method should be void",m.getReturnType().equals(void.class));
 
 	}
 
@@ -4126,11 +4138,12 @@ public class Milestone1PublicTests {
 		else
 			varName = methodName.substring(3,4).toLowerCase() + methodName.substring(4);
 		if(!thrown) {
-            assertEquals("Incorrect return type for " + methodName + " method in " + aClass.getSimpleName() + " class.", m.getReturnType(), returnType);
+			assertTrue("Incorrect return type for " + methodName + " method in " + aClass.getSimpleName() + " class.",
+					m.getReturnType().equals(returnType));
 		}
 		else
-            fail("The \"" + varName + "\" instance variable in class " + aClass.getSimpleName()
-                    + " is not a READ variable.");
+			assertTrue("The \"" + varName + "\" instance variable in class " + aClass.getSimpleName()
+			+ " is not a READ variable.", false);
 	}
 
 
@@ -4149,7 +4162,7 @@ public class Milestone1PublicTests {
 			assertTrue(varName + " should be static", isStatic);
 		}
 		else
-            fail("you should have" + varName + " as a static variable");
+			assertTrue("you should have" + varName + " as a static variable", false);
 	}
 
 
@@ -4253,7 +4266,7 @@ public class Milestone1PublicTests {
 			assertTrue(varName + " should be final", isFinal);
 		}
 		else
-            fail("you should have" + varName + " as a final variable");
+			assertTrue("you should have" + varName + " as a final variable", false);
 	}
 
 
@@ -4307,10 +4320,10 @@ public class Milestone1PublicTests {
 
 		Character c = name.charAt(0);
 
-		String methodName = "get" + Character.toUpperCase(c) + name.substring(1);
+		String methodName = "get" + Character.toUpperCase(c) + name.substring(1, name.length());
 
 		if (value.getClass().equals(Boolean.class))
-			methodName = "is" + Character.toUpperCase(c) + name.substring(1);
+			methodName = "is" + Character.toUpperCase(c) + name.substring(1, name.length());
 
 		Method m = createdObject.getClass().getMethod(methodName);
 		assertEquals(
@@ -4353,7 +4366,8 @@ public class Milestone1PublicTests {
 		assertTrue(aClass.getSimpleName() + " class should have " + methodName + " method that takes one "
 				+ inputType.getSimpleName() + " parameter.", found);
 
-        assertEquals("Incorrect return type for " + methodName + " method in " + aClass.getSimpleName() + ".", m.getReturnType(), Void.TYPE);
+		assertTrue("Incorrect return type for " + methodName + " method in " + aClass.getSimpleName() + ".",
+				m.getReturnType().equals(Void.TYPE));
 
 	}
 
@@ -4379,7 +4393,7 @@ public class Milestone1PublicTests {
 		f.setAccessible(true);
 
 		Character c = name.charAt(0);
-		String methodName = "set" + Character.toUpperCase(c) + name.substring(1);
+		String methodName = "set" + Character.toUpperCase(c) + name.substring(1, name.length());
 		Method m = createdObject.getClass().getMethod(methodName, type);
 		m.invoke(createdObject, setValue);
 		if (name == "currentActionPoints" || name == "currentHP") {
@@ -4692,13 +4706,13 @@ public class Milestone1PublicTests {
 		String methodName = currentMethodName;
 
 		if (value.getClass().equals(Boolean.class)
-				&& !name.startsWith("is"))
+				&& !name.substring(0, 2).equals("is"))
 			methodName = "is" + Character.toUpperCase(c)
-			+ name.substring(1);
+			+ name.substring(1, name.length());
 		else if (value.getClass().equals(Boolean.class)
-				&& name.startsWith("is"))
+				&& name.substring(0, 2).equals("is"))
 			methodName = "is" + Character.toUpperCase(name.charAt(2))
-			+ name.substring(3);
+			+ name.substring(3, name.length());
 
 		Method m = createdObject.getClass().getMethod(methodName);
 		assertEquals("The method \"" + methodName + "\" in class "
@@ -4718,7 +4732,8 @@ public class Milestone1PublicTests {
 		try {
 			Field field = givenClass.getDeclaredField(givenAttributeName);
 
-            assertNotNull("Attribute " + attributeName + " should exist in class " + givenClass.getSimpleName(), field);
+			assertTrue("Attribute " + attributeName + " should exist in class " + givenClass.getSimpleName(),
+					field != null);
 		} catch (Exception e) {
 			fail("Exception occurred: " + e.getMessage());
 		}

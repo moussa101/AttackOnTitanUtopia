@@ -15,7 +15,7 @@ abstract public class Titan implements Comparable<Titan>, Attacker {
     private final int heightInMeters;
     private  int distanceFromBase;
     private int speed;
-    private final int resourcesValue;
+    private final int resourcesValue ;
     private final int dangerLevel;
 
     public Titan(int baseHealth, int baseDamage, int heightInMeters, int distanceFromBase, int speed, int resourcesValue, int dangerLevel) {
