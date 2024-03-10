@@ -1,5 +1,7 @@
 package game.engine.weapons;
 
+import game.engine.weapons.factory.WeaponFactory;
+
 public class WeaponRegistry {
     private final int code;
     private final int price;

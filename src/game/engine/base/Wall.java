@@ -22,6 +22,8 @@ public class Wall implements Attackee {
     }
 
     public void setCurrentHealth(int currentHealth) {
+        if (currentHealth<0)
+            currentHealth =0;
         this.currentHealth = currentHealth;
     }
 

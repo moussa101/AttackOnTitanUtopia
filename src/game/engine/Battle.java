@@ -1,17 +1,20 @@
 package game.engine;
 
 import game.engine.base.Wall;
+import game.engine.dataloader.DataLoader;
 import game.engine.lanes.Lane;
 import game.engine.titans.Titan;
 import game.engine.titans.TitanRegistry;
+import game.engine.weapons.Weapon;
 import game.engine.weapons.factory.WeaponFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
 public class Battle {
-    private final static int[][] PHASES_APPROACHING_TITANS = new int[1][];
+    private final static int[][] PHASES_APPROACHING_TITANS = {{ 1, 1, 1, 2, 1, 3, 4 },{ 2, 2, 2, 1, 3, 3, 4 },{ 4, 4, 4, 4, 4, 4, 4 }};
     private final int WALL_BASE_HEALTH = 10000;
     private int numberOfTurns;
     private int resourcesGathered;
@@ -26,12 +29,16 @@ public class Battle {
     private final ArrayList<Lane> originalLanes;
 
 
-    public Battle(int[][] phasesApproachingTitans, WeaponFactory weaponFactory, HashMap<Integer, TitanRegistry> titansArchives, ArrayList<Titan> approachingTitans, PriorityQueue<Lane> lanes, ArrayList<Lane> originalLanes) {
-        this.weaponFactory = weaponFactory;
-        this.titansArchives = titansArchives;
-        this.approachingTitans = approachingTitans;
-        this.lanes = lanes;
-        this.originalLanes = originalLanes;
+    public Battle(int numberOfTurns, int score, int titanSpawnDistance,int initialNumOfLanes,int initialResourcesPerLane) throws IOException {
+        this.numberOfTurns = numberOfTurns;
+        this.score = score;
+        this.titanSpawnDistance = titanSpawnDistance;
+        this.weaponFactory =  new WeaponFactory();
+        this.titansArchives = DataLoader.readTitanRegistry();
+        this.approachingTitans = new ArrayList<>();
+        this.lanes = new PriorityQueue<>();
+        this.originalLanes = new ArrayList<>();
+        initializeLanes(initialNumOfLanes);
     }
 
     private void initializeLanes(int numOfLanes){

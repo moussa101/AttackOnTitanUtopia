@@ -13,7 +13,7 @@ abstract public class Titan implements Comparable<Titan>, Attacker {
     private int currentHealth;
     private final int baseDamage;
     private final int heightInMeters;
-    private final int distanceFromBase;
+    private  int distanceFromBase;
     private int speed;
     private final int resourcesValue;
     private final int dangerLevel;
@@ -40,9 +40,11 @@ abstract public class Titan implements Comparable<Titan>, Attacker {
     }
 
     public void setCurrentHealth(int currentHealth) {
-        if(currentHealth<0)
-            currentHealth =0;
-        this.currentHealth = currentHealth;
+        if (currentHealth < 0)
+            currentHealth = 0;
+
+            this.currentHealth = currentHealth;
+
     }
 
     public int getDamage() {
@@ -53,7 +55,7 @@ abstract public class Titan implements Comparable<Titan>, Attacker {
         return heightInMeters;
     }
 
-    public int getDistanceFromBase() {
+    public int getDistance() {
         return distanceFromBase;
     }
 
@@ -74,8 +76,9 @@ abstract public class Titan implements Comparable<Titan>, Attacker {
         return dangerLevel;
     }
 
-
-
+    public void setDistance(int distanceFromBase) {
+        this.distanceFromBase = distanceFromBase;
+    }
 
     @Override
     public int compareTo(@NotNull Titan o) {

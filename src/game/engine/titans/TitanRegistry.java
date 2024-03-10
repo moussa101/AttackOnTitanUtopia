@@ -1,6 +1,6 @@
 package game.engine.titans;
 
-public class TitanRegistry {
+public class TitanRegistry{
 
    private final int code;
    private final int baseHealth;
