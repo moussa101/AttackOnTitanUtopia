@@ -7,7 +7,7 @@
     <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="i">
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AttackOnTitanUtopia.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Milestone 1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Milestone 1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/AttackOnTitanUtopia.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +65,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs.jest.jest_package": "",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "preferences.pluginManager",
@@ -79,7 +79,7 @@
   </component>
   <component name="RunManager">
     <configuration name="Milestone1PublicTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Milestone 1" />
+      <module name="AttackOnTitanUtopia" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="Milestone1PublicTests" />
       <option name="TEST_OBJECT" value="class" />
@@ -127,6 +127,7 @@
       <workItem from="1710056970032" duration="333000" />
       <workItem from="1710101423048" duration="2830000" />
       <workItem from="1710105282376" duration="159000" />
+      <workItem from="1710215170169" duration="596000" />
     </task>
     <task id="LOCAL-00001" summary="i">
       <option name="closed" value="true" />
