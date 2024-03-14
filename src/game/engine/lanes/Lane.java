@@ -17,8 +17,8 @@ public class Lane implements Comparable<Lane>{
     public Lane(Wall laneWall) {
         dangerLevel =0;
         this.laneWall = laneWall;
-        this.titans = new PriorityQueue<>();
-        this.weapons = new ArrayList<>();
+        this.titans = new PriorityQueue<Titan>();
+        this.weapons = new ArrayList<Weapon>();
     }
 
 

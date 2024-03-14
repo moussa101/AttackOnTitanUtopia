@@ -5,10 +5,6 @@ import game.engine.interfaces.Mobil;
 import org.jetbrains.annotations.NotNull;
 
 abstract public class Titan implements Comparable<Titan>, Attacker {
-    public static final int PURE_TITAN_CODE = 1;
-    public static final int ABNORMAL_TITAN_CODE = 2;
-    public static final int ARMORED_TITAN_CODE = 3;
-    public static final int COLOSSAL_TITAN_CODE = 4;
     private final int baseHealth;
     private int currentHealth;
     private final int baseDamage;
