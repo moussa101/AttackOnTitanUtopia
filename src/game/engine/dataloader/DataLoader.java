@@ -49,9 +49,9 @@ public class DataLoader {
             int damage = Integer.parseInt(line[2]);
             String name = (line[3]);
             if (line.length == 6) {
-                int maxRange = Integer.parseInt(line[4]);
-                int minRange = Integer.parseInt(line[5]);
-                d = new WeaponRegistry(code, price, damage, name, maxRange, minRange);
+                int minRange = Integer.parseInt(line[4]);
+                int maxRange = Integer.parseInt(line[5]);
+                d = new WeaponRegistry(code, price, damage, name, minRange, maxRange);
             } else {
                 d = new WeaponRegistry(code, price, damage, name);
             }
