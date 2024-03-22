@@ -2,7 +2,6 @@ package game.engine.titans;
 
 import game.engine.interfaces.Attacker;
 import game.engine.interfaces.Mobil;
-import org.jetbrains.annotations.NotNull;
 
 abstract public class Titan implements Comparable<Titan>, Attacker {
     private final int baseHealth;
@@ -77,7 +76,7 @@ abstract public class Titan implements Comparable<Titan>, Attacker {
     }
 
     @Override
-    public int compareTo(@NotNull Titan o) {
+    public int compareTo( Titan o) {
         return this.distanceFromBase- o.distanceFromBase;
     }
 
