@@ -5,7 +5,6 @@ import game.engine.interfaces.Attackee;
 public class Wall implements Attackee {
   private final int baseHealth;
   private int currentHealth;
-  int a =5;
   private int ResourcesValue =-1;
 
     public Wall(int baseHealth) {
