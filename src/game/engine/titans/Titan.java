@@ -1,9 +1,10 @@
 package game.engine.titans;
 
+import game.engine.interfaces.Attackee;
 import game.engine.interfaces.Attacker;
 import game.engine.interfaces.Mobil;
 
-abstract public class Titan implements Comparable<Titan>, Attacker {
+abstract public class Titan implements Comparable<Titan>, Attacker, Attackee, Mobil {
     private final int baseHealth;
     private int currentHealth;
     private final int baseDamage;
@@ -71,8 +72,10 @@ abstract public class Titan implements Comparable<Titan>, Attacker {
         return dangerLevel;
     }
 
-    public void setDistance(int distanceFromBase) {
-        this.distanceFromBase = distanceFromBase;
+    public void setDistance(int distance) {
+        if (distance < 0)
+            this.distanceFromBase = 0;
+        this.distanceFromBase = distance;
     }
 
     @Override

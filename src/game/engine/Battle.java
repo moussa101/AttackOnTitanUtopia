@@ -15,7 +15,7 @@ import java.util.PriorityQueue;
 
 public class Battle {
     private final static int[][] PHASES_APPROACHING_TITANS = {{ 1, 1, 1, 2, 1, 3, 4 },{ 2, 2, 2, 1, 3, 3, 4 },{ 4, 4, 4, 4, 4, 4, 4 }};
-    private final int WALL_BASE_HEALTH = 10000;
+    private static final int WALL_BASE_HEALTH = 10000;
     private int numberOfTurns;
     private int resourcesGathered;
     private BattlePhase battlePhase;
@@ -38,6 +38,9 @@ public class Battle {
         this.approachingTitans = new ArrayList<>();
         this.lanes = new PriorityQueue<>();
         this.originalLanes = new ArrayList<>();
+        this.battlePhase = BattlePhase.EARLY;
+        this.numberOfTitansPerTurn = 1;
+        this.resourcesGathered = initialResourcesPerLane*initialNumOfLanes;
         initializeLanes(initialNumOfLanes);
     }
 

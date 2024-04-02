@@ -5,5 +5,4 @@ public interface Mobil {
     void setDistance(int distance);
     int getSpeed();
     void setSpeed(int speed);
-
 }

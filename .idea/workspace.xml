@@ -5,8 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="mfinal">
+      <change afterPath="$PROJECT_DIR$/src/game/tests/Milestone1PrivateTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/Battle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/Battle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/interfaces/Attackee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/interfaces/Attackee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/interfaces/Attacker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/interfaces/Attacker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/interfaces/Mobil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/interfaces/Mobil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/titans/AbnormalTitan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/titans/AbnormalTitan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/titans/ArmoredTitan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/titans/ArmoredTitan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/titans/ColossalTitan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/titans/ColossalTitan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/engine/titans/Titan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/titans/Titan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/weapons/WeaponRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/weapons/WeaponRegistry.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +54,7 @@
     "Application.WallTrap.executor": "Run",
     "Downloaded.Files.Path.Enabled": "false",
     "JUnit.GameTest.executor": "Debug",
+    "JUnit.Milestone1PrivateTests.executor": "Run",
     "JUnit.Milestone1PublicTests.executor": "Run",
     "JUnit.Milestone1PublicTests.testLoadresourcesValueTitansCorrectly.executor": "Run",
     "Notification.DisplayName-DoNotAsk-Compiler": "Build finished",
@@ -57,7 +67,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/abdel/OneDrive/Desktop/Milestone 1",
+    "last_opened_file_path": "C:/Users/abdel/OneDrive/Desktop/AttackOnTitanUtopia",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -73,10 +83,20 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\abdel\OneDrive\Desktop\AttackOnTitanUtopia\src\game\tests" />
       <recent name="C:\Users\abdel\OneDrive\Desktop\Milestone 1\src\game\tests" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.Milestone1PrivateTests">
+    <configuration name="Milestone1PrivateTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="AttackOnTitanUtopia" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="Milestone1PrivateTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Milestone1PublicTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AttackOnTitanUtopia" />
       <option name="PACKAGE_NAME" value="" />
@@ -88,6 +108,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.Milestone1PrivateTests" />
         <item itemvalue="JUnit.Milestone1PublicTests" />
       </list>
     </recent_temporary>
@@ -130,7 +151,8 @@
       <workItem from="1710307841830" duration="131000" />
       <workItem from="1710411257328" duration="1626000" />
       <workItem from="1710608273404" duration="1629000" />
-      <workItem from="1711091048928" duration="91000" />
+      <workItem from="1711091048928" duration="157000" />
+      <workItem from="1712011211585" duration="4660000" />
     </task>
     <task id="LOCAL-00001" summary="i">
       <option name="closed" value="true" />
@@ -188,7 +210,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710412474008</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="mfinal">
+      <option name="closed" value="true" />
+      <created>1711091199630</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1711091199630</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -57,7 +57,5 @@ public class WeaponRegistry {
         return maxRange;
     }
 
-    public void setMaxRange(int maxRange) {
-        this.maxRange = maxRange;
-    }
+
 }
