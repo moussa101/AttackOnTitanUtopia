@@ -83,7 +83,7 @@
       <recent name="C:\Users\abdel\OneDrive\Desktop\Milestone 1\src\game\tests" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.Milestone1PublicTests">
+  <component name="RunManager" selected="JUnit.Milestone1PrivateTests">
     <configuration name="Milestone1PrivateTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AttackOnTitanUtopia" />
       <option name="PACKAGE_NAME" value="" />
@@ -104,8 +104,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.Milestone1PublicTests" />
         <item itemvalue="JUnit.Milestone1PrivateTests" />
+        <item itemvalue="JUnit.Milestone1PublicTests" />
       </list>
     </recent_temporary>
   </component>
