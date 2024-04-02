@@ -8,8 +8,7 @@ public class Wall implements Attackee {
   private int ResourcesValue =-1;
 
     public Wall(int baseHealth) {
-        if (baseHealth<0)
-            baseHealth =0;
+
         this.baseHealth = baseHealth;
         this.currentHealth = baseHealth;
     }
@@ -18,18 +17,23 @@ public class Wall implements Attackee {
         return baseHealth;
     }
 
+    @Override
     public int getCurrentHealth() {
         return currentHealth;
     }
 
-    public void setCurrentHealth(int currentHealth) {
-        if (currentHealth<0)
-            currentHealth =0;
-        this.currentHealth = currentHealth;
+    @Override
+    public void setCurrentHealth(int health) {
+        if (health < 0)
+            this.currentHealth = 0;
+        else
+            this.currentHealth = health;
     }
 
     @Override
     public int getResourcesValue() {
-        return ResourcesValue;
+        return -1;
     }
-}
+    }
+
+

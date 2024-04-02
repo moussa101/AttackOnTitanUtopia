@@ -1,35 +1,17 @@
 package game.engine.titans;
 
-import game.engine.interfaces.Attackee;
-import game.engine.interfaces.Attacker;
-import game.engine.interfaces.Mobil;
+import game.engine.interfaces.*;
 
-abstract public class Titan implements Comparable<Titan>, Attacker, Attackee, Mobil {
-    private final int baseHealth;
-    private int currentHealth;
+public abstract class Titan implements Comparable<Titan>, Attacker, Attackee, Mobil {
+
     private final int baseDamage;
     private final int heightInMeters;
-    private  int distanceFromBase;
-    private int speed;
-    private final int resourcesValue ;
+    private final int resourcesValue;
     private final int dangerLevel;
-
-    public Titan(int baseHealth, int baseDamage, int heightInMeters, int distanceFromBase, int speed, int resourcesValue, int dangerLevel) {
-        this.baseHealth = baseHealth;
-        this.currentHealth = baseHealth;
-        this.baseDamage = baseDamage;
-        this.heightInMeters = heightInMeters;
-        this.distanceFromBase = distanceFromBase;
-        this.speed = speed;
-        this.resourcesValue = resourcesValue;
-        this.dangerLevel = dangerLevel;
-    }
-
-
-    public int getBaseHealth() {
-        return baseHealth;
-    }
-
+    private final int baseHealth;
+    private int currentHealth;
+    private int distanceFromBase;
+    private int speed;
 
     public int getCurrentHealth() {
         return currentHealth;
@@ -37,24 +19,10 @@ abstract public class Titan implements Comparable<Titan>, Attacker, Attackee, Mo
 
     public void setCurrentHealth(int currentHealth) {
         if (currentHealth < 0)
-            currentHealth = 0;
-      else
+            this.currentHealth = 0;
+        else
             this.currentHealth = currentHealth;
-
     }
-
-    public int getDamage() {
-        return baseDamage;
-    }
-
-    public int getHeightInMeters() {
-        return heightInMeters;
-    }
-
-    public int getDistance() {
-        return distanceFromBase;
-    }
-
 
     public int getSpeed() {
         return speed;
@@ -62,6 +30,14 @@ abstract public class Titan implements Comparable<Titan>, Attacker, Attackee, Mo
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public int getBaseHealth() {
+        return baseHealth;
+    }
+
+    public int getHeightInMeters() {
+        return heightInMeters;
     }
 
     public int getResourcesValue() {
@@ -72,19 +48,40 @@ abstract public class Titan implements Comparable<Titan>, Attacker, Attackee, Mo
         return dangerLevel;
     }
 
+    public int getDamage() {
+        return baseDamage;
+    }
+
+    @Override
+    public int getDistance() {
+        return distanceFromBase;
+    }
+
+    @Override
     public void setDistance(int distance) {
         if (distance < 0)
             this.distanceFromBase = 0;
         else
-        this.distanceFromBase = distance;
+            this.distanceFromBase = distance;
     }
 
-    @Override
-    public int compareTo(Titan o) {
-        return this.distanceFromBase- o.distanceFromBase;
+    public Titan(int baseHealth, int baseDamage, int heightInMeters, int distanceFromBase, int speed,
+                 int resourcesValue, int dangerLevel) {
+        this.baseHealth = baseHealth;
+        this.baseDamage = baseDamage;
+        this.heightInMeters = heightInMeters;
+        this.distanceFromBase = distanceFromBase;
+        this.speed = speed;
+        this.resourcesValue = resourcesValue;
+        this.dangerLevel = dangerLevel;
+        this.currentHealth = baseHealth;
     }
 
+    public int compareTo(Titan arg0) {
 
+        return (this.distanceFromBase - arg0.distanceFromBase);
+
+    };
 }
 
 
