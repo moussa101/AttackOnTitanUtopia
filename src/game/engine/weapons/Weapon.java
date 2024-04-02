@@ -1,5 +1,9 @@
 package game.engine.weapons;
 
+import game.engine.titans.Titan;
+
+import java.util.PriorityQueue;
+
 abstract public class Weapon {
     public static final int PIERCING_CANON_WEAPON_CODE= 1;
     public static final int SNIPER_CANNON_WEAPON_CODE= 2;
@@ -14,5 +18,6 @@ abstract public class Weapon {
     public int getDamage() {
         return baseDamage;
     }
+    abstract int turnAttack(PriorityQueue<Titan> laneTitans);
 
 }
