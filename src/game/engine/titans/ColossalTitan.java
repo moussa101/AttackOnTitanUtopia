@@ -9,7 +9,8 @@ public class ColossalTitan extends Titan{
     }
 
     @Override
-    public void setSpeed(int speed) {
-        super.setSpeed(speed++);
+    public void setDistance(int distance) {
+        super.setDistance(distance);
+        super.setSpeed(getSpeed()+1);
     }
 }
