@@ -15,10 +15,7 @@ import game.engine.weapons.factory.WeaponFactory;
 public class Battle {
 
     private final static int[][] PHASES_APPROACHING_TITANS =
-            {		{ 1, 1, 1, 2, 1, 3, 4 },
-                    { 2, 2, 2, 1, 3, 3, 4 },
-                    { 4, 4, 4, 4, 4, 4, 4 } };
-
+            {{ 1, 1, 1, 2, 1, 3, 4 }, { 2, 2, 2, 1, 3, 3, 4 }, { 4, 4, 4, 4, 4, 4, 4 } };
     private final static int WALL_BASE_HEALTH =10000 ;
     private final WeaponFactory weaponFactory;
     private final HashMap<Integer, TitanRegistry> titansArchives;
@@ -111,8 +108,7 @@ public class Battle {
 
 
 
-    public Battle(int numberOfTurns, int score, int titanSpawnDistance, int initialNumOfLanes,
-                  int initialResourcesPerLane) throws IOException {
+    public Battle(int numberOfTurns, int score, int titanSpawnDistance, int initialNumOfLanes, int initialResourcesPerLane) throws IOException {
         this.numberOfTurns = numberOfTurns;
         this.score = score;
         this.titanSpawnDistance = titanSpawnDistance;
@@ -129,7 +125,6 @@ public class Battle {
     }
 
     private void initializeLanes(int numOfLanes) {
-
         for(int i = 0 ; i < numOfLanes;i++) {
             Lane l = new Lane(new Wall(WALL_BASE_HEALTH));
             originalLanes.add(l);
@@ -137,5 +132,13 @@ public class Battle {
 
         }
     }
+    public void refillApproachingTitans(){
+        int average =0;
+        ArrayList<Titan> a = getApproachingTitans();
+        for (Titan b: a){
+
+        }
+    }
+
 
 }

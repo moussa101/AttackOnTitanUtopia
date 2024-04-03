@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="m2 1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/titans/TitanRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/titans/TitanRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/titans.csv" beforeDir="false" afterPath="$PROJECT_DIR$/titans.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/Battle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/Battle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +170,7 @@
       <workItem from="1712041261161" duration="6510000" />
       <workItem from="1712053768094" duration="4176000" />
       <workItem from="1712079785275" duration="83000" />
-      <workItem from="1712133650706" duration="603000" />
+      <workItem from="1712133650706" duration="1765000" />
     </task>
     <task id="LOCAL-00001" summary="i">
       <option name="closed" value="true" />
@@ -309,7 +308,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712077908344</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="m2 1">
+      <option name="closed" value="true" />
+      <created>1712134620778</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1712134620778</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
