@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="m2 1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/Battle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/Battle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +38,7 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Moussa" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -67,6 +66,7 @@
     &quot;JUnit.Milestone1PrivateTests.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.Milestone1PublicTests.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.Milestone1PublicTests.testLoadresourcesValueTitansCorrectly.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Milestone2PublicTests.executor&quot;: &quot;Run&quot;,
     &quot;Notification.DisplayName-DoNotAsk-Compiler&quot;: &quot;Build finished&quot;,
     &quot;Notification.DoNotAsk-Compiler&quot;: &quot;true&quot;,
     &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
@@ -75,7 +75,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Moussa&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;moussa&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/abdel/OneDrive/Desktop/AttackOnTitanUtopia&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -93,12 +93,12 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\abdel\OneDrive\Desktop\AttackOnTitanUtopia\src" />
       <recent name="C:\Users\abdel\OneDrive\Desktop\AttackOnTitanUtopia\src\game\tests" />
+      <recent name="C:\Users\abdel\OneDrive\Desktop\AttackOnTitanUtopia\src" />
       <recent name="C:\Users\abdel\OneDrive\Desktop\Milestone 1\src\game\tests" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.Milestone1PrivateTests">
+  <component name="RunManager" selected="JUnit.Milestone2PublicTests">
     <configuration name="Milestone1PrivateTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AttackOnTitanUtopia" />
       <option name="PACKAGE_NAME" value="" />
@@ -117,13 +117,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Milestone2PublicTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="AttackOnTitanUtopia" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="Milestone2PublicTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.Milestone2PublicTests" />
         <item itemvalue="JUnit.Milestone1PublicTests" />
         <item itemvalue="JUnit.Milestone1PrivateTests" />
+        <item itemvalue="JUnit.Milestone2PublicTests" />
         <item itemvalue="JUnit.Milestone1PublicTests" />
-        <item itemvalue="JUnit.Milestone1PrivateTests" />
-        <item itemvalue="JUnit.Milestone1PrivateTests" />
       </list>
     </recent_temporary>
   </component>
@@ -171,6 +180,7 @@
       <workItem from="1712053768094" duration="4176000" />
       <workItem from="1712079785275" duration="83000" />
       <workItem from="1712133650706" duration="1765000" />
+      <workItem from="1712688307113" duration="728000" />
     </task>
     <task id="LOCAL-00001" summary="i">
       <option name="closed" value="true" />
