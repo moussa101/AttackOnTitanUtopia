@@ -45,4 +45,12 @@ public class Lane implements Comparable<Lane>{
     public ArrayList<Weapon> getWeapons() {
         return weapons;
     }
+    public boolean isLaneLost(){
+        if (this.laneWall.getCurrentHealth()==0){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
