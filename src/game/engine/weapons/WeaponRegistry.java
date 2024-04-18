@@ -65,20 +65,21 @@ public class WeaponRegistry {
         return maxRange;
     }
     public Weapon buildWeapon(){
-        switch (code){
-            case 1:
-                return new PiercingCannon(getDamage());
+        Weapon a;
+        switch (getCode()){
+            case 1 : a = new PiercingCannon(getDamage());
 
-            case 2:
-                return new SniperCannon(getDamage());
+            case 2 : a = new SniperCannon(getDamage());
 
-            case 3:
-                return new VolleySpreadCannon(getDamage(), getMinRange() ,getMaxRange() );
+            case 3 : a = new VolleySpreadCannon(getDamage(),getMinRange(),getMaxRange());
 
-            case 4:
-                return new WallTrap(getDamage());
+            case 4 : a = new WallTrap(getDamage());
+            default:
+                a = null;
         }
+    return a;
     }
+
 
 
 
