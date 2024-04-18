@@ -51,16 +51,16 @@ public class TitanRegistry{
     public Titan spawnTitan(int distanceFromBase){
         Titan a;
         switch (getCode()){
-            case 1: a = new PureTitan(1,100,15,distanceFromBase,10,10,1); break;
+            case 1: a = new PureTitan(getBaseHealth(),getBaseDamage(),getHeightInMeters(),distanceFromBase,getSpeed(),getResourcesValue(),getDangerLevel()); break;
             
-            case 2: a = new AbnormalTitan(2,100,20,distanceFromBase,15,15,2); break;
+            case 2: a = new AbnormalTitan(getBaseHealth(),getBaseDamage(),getHeightInMeters(),distanceFromBase,getSpeed(),getResourcesValue(),getDangerLevel()); break;
             
-            case 3: a = new ArmoredTitan(3,200,85,distanceFromBase,10,30,3);break;
+            case 3: a = new ArmoredTitan (getBaseHealth(),getBaseDamage(),getHeightInMeters(),distanceFromBase,getSpeed(),getResourcesValue(),getDangerLevel());break;
             
-            case 4: a = new ColossalTitan(4,1000,100,distanceFromBase,5,60,4);break;
+            case 4: a = new ColossalTitan(getBaseHealth(),getBaseDamage(),getHeightInMeters(),distanceFromBase,getSpeed(),getResourcesValue(),getDangerLevel());break;
 
             default:
-                throw new IllegalStateException("Unexpected value: " + getCode());
+                a =null;
         }
         return a;
     }

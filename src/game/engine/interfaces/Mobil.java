@@ -15,11 +15,6 @@ public interface Mobil {
     }
     default boolean move(){
         setDistance(getDistance()-getSpeed());
-        if (getDistance()<=0){
-            return true;
-        }
-        else {
-            return false;
-        }
+        return hasReachedTarget();
     }
 }

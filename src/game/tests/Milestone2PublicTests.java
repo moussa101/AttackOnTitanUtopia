@@ -87,6 +87,9 @@ public class Milestone2PublicTests {
 			lanesField.setAccessible(true);
 			PriorityQueue<Object> lanesPQ= new PriorityQueue<>();
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
 
 
 			Object wall=createWall();
@@ -105,7 +108,11 @@ public class Milestone2PublicTests {
 			titansPQ.add(titan2);
 			titansPQ.add(titan3);
 			lanesPQ.add(laneObject);
+
+			originalLanes.add(laneObject);
 			lanesField.set(battle,lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
 			Field dangerLevelFieldTitan= Class.forName(titanClassPath).getDeclaredField("dangerLevel");
 			dangerLevelFieldTitan.setAccessible(true);
 			int dangerLevel= dangerLevelFieldTitan.getInt(titan)+dangerLevelFieldTitan.getInt(titan2)+dangerLevelFieldTitan.getInt(titan3);
@@ -130,8 +137,166 @@ public class Milestone2PublicTests {
 		}
 
 	}
+	@Test(timeout=1000)
+	public void testOrderAddTurnTitansAndFinalizeTurnBattlePerformTurn() {
+		Constructor<?> battleConstructor;
+
+		try {
+			battleConstructor = Class.forName(battlePath).getConstructor(int.class,int.class,int.class,int.class,int.class);
+			int random1 = (int) (Math.random() * 10) + 1;
+			int random2 = (int) (Math.random() * 10) + 1;
+			int random3 = (int) (Math.random() * 10) + 1;
+			int random4 = (int) (Math.random() * 10) + 1;
+			int random5 = (int) (Math.random() * 10) + 1; 
+			Object battle = battleConstructor.newInstance(random1,random2,random3,random4,random5);
+
+			Field battlePhase= Class.forName(battlePath).getDeclaredField("battlePhase");
+			battlePhase.setAccessible(true);
+			battlePhase.set(battle, returnEnumValue(battlePhasePath, "GRUMBLING"));
+
+			Field numberOfTurnsField= Class.forName(battlePath).getDeclaredField("numberOfTurns");
+			numberOfTurnsField.setAccessible(true);
+			numberOfTurnsField.set(battle, 34);
+
+			Field lanesField= Class.forName(battlePath).getDeclaredField("lanes");
+			lanesField.setAccessible(true);
+			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+			lanesPQ= new PriorityQueue<>();
+
+			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
+			Object laneObject =  constructor.newInstance(createWall());
+			Object laneObject2 =  constructor.newInstance(createWall());
+			Object laneObject3 =  constructor.newInstance(createWall());
+			Object laneObject4 =  constructor.newInstance(createWall());
+
+			int dangerLevel1= returnLaneDangerLevel(laneObject);
+			int dangerLevel2= returnLaneDangerLevel(laneObject2);
+			int dangerLevel3= returnLaneDangerLevel(laneObject3);
+
+			Field dangerLevelFieldLane= Class.forName(lanePath).getDeclaredField("dangerLevel");
+			dangerLevelFieldLane.setAccessible(true);
+			dangerLevelFieldLane.set(laneObject4, 0);
+			dangerLevelFieldLane.set(laneObject3, dangerLevel3);
+			dangerLevelFieldLane.set(laneObject2, dangerLevel2);
+			dangerLevelFieldLane.set(laneObject, dangerLevel1);
 
 
+			lanesPQ.add(laneObject4);
+			lanesPQ.add(laneObject3);
+			lanesPQ.add(laneObject2);
+			lanesPQ.add(laneObject);
+
+			originalLanes.addAll(lanesPQ);
+
+			originalLanesField.set(battle, originalLanes);
+
+			lanesField.set(battle, lanesPQ);
+			Object titan= createPureTitan();
+			int value=0;
+			Field dangerLevelField= Class.forName(titanClassPath).getDeclaredField("dangerLevel");
+			dangerLevelField.setAccessible(true);
+
+			int random6 = (int) (Math.random() * 2) + 100;
+			value+=random6;
+			dangerLevelField.set(titan,random6 );
+
+			PriorityQueue<Integer> dangerLevel= new PriorityQueue<>();
+			dangerLevel.add(dangerLevel1);
+			dangerLevel.add(dangerLevel2);
+			dangerLevel.add(dangerLevel3);
+			dangerLevel.add(random6);
+
+			Field approachingTitans=  Class.forName(battlePath).getDeclaredField("approachingTitans");
+			approachingTitans.setAccessible(true);
+			approachingTitans.set(battle, new ArrayList<>());
+			((ArrayList<Object>)approachingTitans.get(battle)).add(titan);
+			((ArrayList<Object>)approachingTitans.get(battle)).add(titan);
+
+			Method m= Class.forName(battlePath).getDeclaredMethod("performTurn", null);
+			m.setAccessible(true);
+			m.invoke(battle);
+			if(((PriorityQueue<Object>) (lanesField.get(battle))).isEmpty())
+				fail("Lanes should not be emptied");
+			while(!dangerLevel.isEmpty()) {
+				int dl= dangerLevel.poll();
+				Object lane=((PriorityQueue<Object>) (lanesField.get(battle))).poll();
+				if(lane== null)
+					fail("Add turn titans should not remove any lane from the battle lanes");
+				int laneDL= dangerLevelFieldLane.getInt(lane);
+
+				assertTrue("PerformTurn should excute the main functionalities with the correct order as mentioned in the game description, "
+						+ "to finalize the turn when all the main functionalities have been excuted",laneDL==dl) ;
+			}
+
+
+		} catch (NoSuchMethodException | SecurityException | ClassNotFoundException |
+				InstantiationException | IllegalAccessException | IllegalArgumentException | 
+				InvocationTargetException | NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
+		}
+
+	}
+
+	@Test(timeout = 1000)
+	public void testAttackMethodLogic2(){
+		try {
+			Class weaponClass = Class.forName(sniperCannonPath);
+			Constructor<?> constructor1 = weaponClass.getConstructor(int.class);
+			int baseDamage = (int) (Math.random() * 100) + 60; 
+			Object weapon = constructor1.newInstance(baseDamage);
+			Class armoredTitanClass = Class.forName(armoredTitan);
+			Constructor<?> constructor2 = armoredTitanClass.getConstructor(int.class, int.class, int.class, int.class,
+					int.class, int.class, int.class);
+			int health = (int) (Math.random() * 10) + 1;
+			int damage = (int) (Math.random() * 20) + 10; 
+			int heightInMeters = (int) (Math.random() * 10) + 1;
+			int distanceFromBase = (int) (Math.random() * 10) + 1;
+			int speed = (int) (Math.random() * 10) + 1;
+			int resourcesValue = (int) (Math.random() * 10) + 1;
+			int dangerLevel = (int) (Math.random() * 10) + 1;
+			Object armoredTitan = constructor2.newInstance(health, damage, heightInMeters, distanceFromBase, speed,
+					resourcesValue, dangerLevel);
+
+			Method attack = Class.forName(attackerPath).getDeclaredMethod("attack", Class.forName(attackeePath));
+			Method getResourcesValue = Class.forName(titanPath).getDeclaredMethod("getResourcesValue");
+			Method getCurrentHealth = Class.forName(titanPath).getDeclaredMethod("getCurrentHealth");
+			//if the titan is defeated
+			int result = (int) attack.invoke(weapon, armoredTitan);
+			int expectedHealth = Math.max(0,health - (baseDamage/4));
+			int expectedResult = (int) getResourcesValue.invoke(armoredTitan);
+			assertEquals("The current health of the titan is wrong",expectedHealth , (int)getCurrentHealth.invoke(armoredTitan));
+			assertEquals("The method should return the resources value if the titan is defeated",expectedResult , result);
+
+			// if the titan is not defeated
+			baseDamage = (int) (Math.random() * 10) + 1;
+			weapon = constructor1.newInstance(baseDamage);
+			health = (int) (Math.random() * 20) + 10;
+			armoredTitan = constructor2.newInstance(health, damage, heightInMeters, distanceFromBase, speed, resourcesValue,
+					dangerLevel);
+
+			result = (int) attack.invoke(weapon, armoredTitan);
+			expectedHealth = Math.max(0,health - (baseDamage/4));
+			expectedResult = 0;
+			assertEquals("The current health of the titan is wrong",expectedHealth , (int)getCurrentHealth.invoke(armoredTitan));
+			assertEquals("The method should return 0 if the titan is not defeated",expectedResult , result);
+
+		} catch (ClassNotFoundException| NoSuchMethodException| SecurityException|
+				InstantiationException| IllegalAccessException| IllegalArgumentException|
+				InvocationTargetException e) {
+
+			e.printStackTrace();
+			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
+		}
+
+
+	}
 
 	@Test(timeout=1000)
 	public void testUpdatelaneDangerLevelLostLanesBattle() {
@@ -220,8 +385,9 @@ public class Milestone2PublicTests {
 
 
 
-			//			Object wall=createWall();
-
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
 
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
@@ -242,11 +408,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject);
 			lanesPQ.add(laneObject4);
 
-			//			ArrayList<Object> array= new ArrayList<>();
-			//			while(!lanesPQ.isEmpty()) {
-			//				Object object = lanesPQ.poll();
-			//				array.add(object);
-			//			}
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
 			PriorityQueue<Integer> array= new PriorityQueue<>();
 			array.add(dl1);
 			array.add(dl2);
@@ -271,7 +435,11 @@ public class Milestone2PublicTests {
 			updatelaneDangerLevelMethod.setAccessible(true);
 			updatelaneDangerLevelMethod.invoke(battle);
 			lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
+			
+			if(lanesPQ.isEmpty()) {
+				fail("lanes PriorityQueue should NOT be be emptied when updating danger level");
 
+			}
 			while(!lanesPQ.isEmpty())  {
 				Object object = lanesPQ.poll();
 				int x=array.poll();
@@ -307,6 +475,11 @@ public class Milestone2PublicTests {
 
 
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
 			Object laneObject2 =  constructor.newInstance(createWall());
@@ -337,6 +510,9 @@ public class Milestone2PublicTests {
 
 			lanesPQ.add(laneObject3);
 
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 			lanesField.set(battle, lanesPQ);
 
 			Method moveLaneTitans= Class.forName(battlePath).getDeclaredMethod("moveTitans",  null);
@@ -363,6 +539,92 @@ public class Milestone2PublicTests {
 		}
 	}
 	@Test(timeout=1000)
+	public void testMoveTitansBattleOnlyActiveLanes() {
+		
+		Constructor<?> battleConstructor;
+		try {
+			battleConstructor = Class.forName(battlePath).getConstructor(int.class,int.class,int.class,int.class,int.class);
+			int random1 = (int) (Math.random() * 10) + 1;
+			int random2 = (int) (Math.random() * 10) + 1;
+			int random3 = (int) (Math.random() * 10) + 1;
+			int random4 = (int) (Math.random() * 10) + 1;
+			int random5 = (int) (Math.random() * 10) + 1; 
+			Object battle = battleConstructor.newInstance(random1,random2,random3,random4,random5);
+			
+			Field lanesField= Class.forName(battlePath).getDeclaredField("lanes");
+			lanesField.setAccessible(true);
+			PriorityQueue<Object> lanesPQ= new PriorityQueue<>();
+			
+			
+			
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+			
+			
+			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
+			Object laneObject =  constructor.newInstance(createWall());
+			Object laneObject2 =  constructor.newInstance(createWall());
+			Object laneObject3 =  constructor.newInstance(createWall());
+			
+			
+			Field titansField= Class.forName(lanePath).getDeclaredField("titans");
+			titansField.setAccessible(true);
+			
+			PriorityQueue<Object> titansPQ= (PriorityQueue<Object>) titansField.get(laneObject);
+			Object titan= createAbnormalTitanFixed();
+			titansPQ.add(titan);
+			titansField.set(laneObject, titansPQ);
+			
+			lanesPQ.add(laneObject);
+			
+			PriorityQueue<Object> titansPQ2= (PriorityQueue<Object>) titansField.get(laneObject2);
+			Object titan2= createAbnormalTitanFixed();
+			titansPQ2.add(titan2);
+			titansField.set(laneObject2, titansPQ2);
+			
+			lanesPQ.add(laneObject2);
+			
+			PriorityQueue<Object> titansPQ3= (PriorityQueue<Object>) titansField.get(laneObject3);
+			Object titan3= createAbnormalTitanFixed();
+			titansPQ3.add(titan3);
+			titansField.set(laneObject3, titansPQ3);
+			
+			
+			
+			originalLanes.add(laneObject3);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+			
+			
+			lanesField.set(battle, lanesPQ);
+			
+			
+			Method moveLaneTitans= Class.forName(battlePath).getDeclaredMethod("moveTitans",  null);
+			moveLaneTitans.setAccessible(true);
+			moveLaneTitans.invoke(battle);
+			
+			titansField= Class.forName(lanePath).getDeclaredField("titans");
+			titansField.setAccessible(true);
+			titansPQ= (PriorityQueue<Object>) titansField.get(laneObject);
+			
+			
+			Field titanDistanceField= Class.forName(titanClassPath).getDeclaredField("distanceFromBase");
+			titanDistanceField.setAccessible(true);
+			
+			assertEquals("ALL active lanes should move their titans in battle",25,titanDistanceField.get(titan2) );
+			assertEquals("ALL active lanes should move their titans in battle",25,titanDistanceField.get(titan) );
+			assertEquals("ONLY active lanes should move their titans in battle",30,titanDistanceField.get(titan3) );
+			
+			
+		} catch (NoSuchMethodException | SecurityException | ClassNotFoundException | 
+				InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
+		}
+	}
+	@Test(timeout=1000)
 	public void testMoveTitansBattleAllExist() {
 
 		Constructor<?> battleConstructor;
@@ -379,6 +641,11 @@ public class Milestone2PublicTests {
 			lanesField.setAccessible(true);
 			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
 
+
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
 
 
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
@@ -411,6 +678,8 @@ public class Milestone2PublicTests {
 
 			lanesPQ.add(laneObject3);
 
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 			lanesField.set(battle, lanesPQ);
 
 			Method moveLaneTitans= Class.forName(battlePath).getDeclaredMethod("moveTitans",  null);
@@ -451,6 +720,11 @@ public class Milestone2PublicTests {
 			lanesField.setAccessible(true);
 			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
 
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
 			int value=0;
 
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
@@ -465,6 +739,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject);
 			lanesPQ.add(laneObject2);
 			lanesPQ.add(laneObject3);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			lanesField.set(battle, lanesPQ);
 
@@ -499,6 +776,13 @@ public class Milestone2PublicTests {
 			lanesField.setAccessible(true);
 			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
 
+
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			int value=0;
 
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
@@ -515,6 +799,11 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject3);
 
 			lanesField.set(battle, lanesPQ);
+
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
 			Field resourcesGatheredField= Class.forName(battlePath).getDeclaredField("resourcesGathered");
 			resourcesGatheredField.setAccessible(true);
 			int random6 = (int) (Math.random() * 10) + 1; 
@@ -555,6 +844,12 @@ public class Milestone2PublicTests {
 			lanesField.setAccessible(true);
 			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
 
+
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
 			int value=0;
 
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
@@ -571,6 +866,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject3);
 
 			lanesField.set(battle, lanesPQ);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
 			Field scoreField= Class.forName(battlePath).getDeclaredField("score");
 			scoreField.setAccessible(true);
 			int random6 = (int) (Math.random() * 10) + 1; 
@@ -593,6 +891,70 @@ public class Milestone2PublicTests {
 		}
 	}
 
+	@Test(timeout=1000)
+	public void testperformWeaponsAttacksBattleScore2() {
+		
+		Constructor<?> battleConstructor;
+		try {
+			battleConstructor = Class.forName(battlePath).getConstructor(int.class,int.class,int.class,int.class,int.class);
+			int random1 = (int) (Math.random() * 10) + 5;
+			int random2 = (int) (Math.random() * 10) + 5;
+			int random3 = (int) (Math.random() * 10) + 5;
+			int random4 = (int) (Math.random() * 10) + 5;
+			int random5 = (int) (Math.random() * 10) + 1; 
+			Object battle = battleConstructor.newInstance(random1,random2,random3,random4,random5);
+			
+			Field lanesField= Class.forName(battlePath).getDeclaredField("lanes");
+			lanesField.setAccessible(true);
+			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
+			
+			
+			
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+			
+			int value=0;
+			
+			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
+			Object laneObject =  constructor.newInstance(createWall());
+			Object laneObject2 =  constructor.newInstance(createWall());
+			Object laneObject3 =  constructor.newInstance(createWall());
+			
+			value+=returnResourceGathered(laneObject);
+			value+=returnResourceGathered(laneObject2);
+			returnResourceGathered(laneObject3);
+			
+			lanesPQ.add(laneObject);
+			lanesPQ.add(laneObject2);
+			
+			lanesField.set(battle, lanesPQ);
+			originalLanes.addAll(lanesPQ);
+			originalLanes.add(laneObject3);
+			originalLanesField.set(battle, originalLanes);
+			
+			Field scoreField= Class.forName(battlePath).getDeclaredField("score");
+			scoreField.setAccessible(true);
+			int random6 = (int) (Math.random() * 10) + 1; 
+			scoreField.set(battle, random6);
+			
+			Method performWeaponsAttacksmethod=Class.forName(battlePath).getDeclaredMethod("performWeaponsAttacks",  null);
+			performWeaponsAttacksmethod.setAccessible(true);
+			performWeaponsAttacksmethod.invoke(battle);
+			
+			scoreField= Class.forName(battlePath).getDeclaredField("score");
+			scoreField.setAccessible(true);
+			assertEquals("Only active lanes should preform weapons attack", value+random6, scoreField.get(battle));
+			
+			
+		} catch (NoSuchMethodException | SecurityException | ClassNotFoundException | 
+				InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
+		}
+	}
+	
 
 
 
@@ -623,6 +985,11 @@ public class Milestone2PublicTests {
 			int random7 = (int) (Math.random() * 10) + 1; 
 			scoreField.set(battle, random7);
 
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
 			int value=0;
 
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
@@ -639,6 +1006,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject3);
 
 			lanesField.set(battle, lanesPQ);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
 			resourcesGatheredField= Class.forName(battlePath).getDeclaredField("resourcesGathered");
 			resourcesGatheredField.setAccessible(true);
 
@@ -679,6 +1049,11 @@ public class Milestone2PublicTests {
 			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
 
 
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
 			Object laneObject2 =  constructor.newInstance(createWall());
@@ -694,6 +1069,10 @@ public class Milestone2PublicTests {
 
 			lanesField.set(battle, lanesPQ);
 
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
+
 			Method performTitansAttacksmethod=Class.forName(battlePath).getDeclaredMethod("performTitansAttacks",  null);
 			performTitansAttacksmethod.setAccessible(true);
 			performTitansAttacksmethod.invoke(battle);
@@ -705,6 +1084,64 @@ public class Milestone2PublicTests {
 					( (PriorityQueue<Object>) lanesField.get(battle)).contains(laneObject));
 
 
+		} catch (NoSuchMethodException | SecurityException | ClassNotFoundException | 
+				InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
+		}
+	}
+	@Test(timeout=1000)
+	public void testperformTitansAttacksBattleLaneLostOriginalLanes() {
+		
+		Constructor<?> battleConstructor;
+		try {
+			battleConstructor = Class.forName(battlePath).getConstructor(int.class,int.class,int.class,int.class,int.class);
+			int random1 = (int) (Math.random() * 10) + 5;
+			int random2 = (int) (Math.random() * 10) + 5;
+			int random3 = (int) (Math.random() * 10) + 5;
+			int random4 = (int) (Math.random() * 10) + 5;
+			int random5 = (int) (Math.random() * 10) + 1; 
+			Object battle = battleConstructor.newInstance(random1,random2,random3,random4,random5);
+			
+			Field lanesField= Class.forName(battlePath).getDeclaredField("lanes");
+			lanesField.setAccessible(true);
+			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
+			
+			
+			
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+			
+			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
+			Object laneObject =  constructor.newInstance(createWall());
+			Object laneObject2 =  constructor.newInstance(createWall());
+			Object laneObject3 =  constructor.newInstance(createWall());
+			
+			returnResourceGatheredTitans(laneObject3);
+			returnResourceGatheredTitans(laneObject2);
+			returnResourceGatheredTitans2(laneObject);
+			
+			lanesPQ.add(laneObject);
+			lanesPQ.add(laneObject2);
+			lanesPQ.add(laneObject3);
+			
+			lanesField.set(battle, lanesPQ);
+			
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+			
+			
+			Method performTitansAttacksmethod=Class.forName(battlePath).getDeclaredMethod("performTitansAttacks",  null);
+			performTitansAttacksmethod.setAccessible(true);
+			performTitansAttacksmethod.invoke(battle);
+			assertTrue("lost lanes should NOT be removed from original lanes in battle",
+					( (ArrayList<Object>) originalLanesField.get(battle)).contains(laneObject3));
+			assertTrue("lost lanes should NOT be removed from original lanes in battle",
+					( (ArrayList<Object>) originalLanesField.get(battle)).contains(laneObject2));
+			
+			
 		} catch (NoSuchMethodException | SecurityException | ClassNotFoundException | 
 				InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException e) {
 			// TODO Auto-generated catch block
@@ -730,6 +1167,11 @@ public class Milestone2PublicTests {
 			lanesField.setAccessible(true);
 			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
 
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
 			int value=0;
 
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
@@ -746,6 +1188,10 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject3);
 
 			lanesField.set(battle, lanesPQ);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
 
 			Method performTitansAttacksmethod=Class.forName(battlePath).getDeclaredMethod("performTitansAttacks",  null);
 			performTitansAttacksmethod.setAccessible(true);
@@ -995,6 +1441,11 @@ public class Milestone2PublicTests {
 
 
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
 			Object laneObject2 =  constructor.newInstance(createWall());
@@ -1026,6 +1477,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject3);
 
 			lanesField.set(battle, lanesPQ);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			Method moveLaneTitans= Class.forName(battlePath).getDeclaredMethod("passTurn",  null);
 			moveLaneTitans.setAccessible(true);
@@ -1067,6 +1521,12 @@ public class Milestone2PublicTests {
 			lanesField.setAccessible(true);
 			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
 
+
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
 			int value=0;
 
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
@@ -1083,6 +1543,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject3);
 
 			lanesField.set(battle, lanesPQ);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
 			Field resourcesGatheredField= Class.forName(battlePath).getDeclaredField("resourcesGathered");
 			resourcesGatheredField.setAccessible(true);
 			int random6 = (int) (Math.random() * 10) + 1; 
@@ -1125,6 +1588,11 @@ public class Milestone2PublicTests {
 			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
 
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
 			Object laneObject2 =  constructor.newInstance(createWall());
@@ -1139,6 +1607,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject3);
 
 			lanesField.set(battle, lanesPQ);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			Method performTurnPerformTitansAttacksmethod=Class.forName(battlePath).getDeclaredMethod("passTurn",  null);
 			performTurnPerformTitansAttacksmethod.setAccessible(true);
@@ -1184,6 +1655,11 @@ public class Milestone2PublicTests {
 
 
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Object wall=createWall();
 
 
@@ -1205,12 +1681,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject2);
 			lanesPQ.add(laneObject);
 			lanesPQ.add(laneObject4);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
-			//			ArrayList<Object> array= new ArrayList<>();
-			//			while(!lanesPQ.isEmpty()) {
-			//				Object object = lanesPQ.poll();
-			//				array.add(object);
-			//			}
 			PriorityQueue<Integer> array= new PriorityQueue<>();
 			array.add(dl1);
 			array.add(dl2);
@@ -1237,7 +1710,10 @@ public class Milestone2PublicTests {
 			updatelaneDangerLevelMethod.invoke(battle);
 			lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
 
+			if(lanesPQ.isEmpty()) {
+				fail("lanes PriorityQueue should NOT be be empty");
 
+			}
 			while(!lanesPQ.isEmpty())  {
 				Object object = lanesPQ.poll();
 				int x=array.poll();
@@ -1350,6 +1826,11 @@ public class Milestone2PublicTests {
 
 
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
 			Object laneObject2 =  constructor.newInstance(createWall());
@@ -1381,6 +1862,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject3);
 
 			lanesField.set(battle, lanesPQ);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			Method moveLaneTitans= Class.forName(battlePath).getDeclaredMethod("performTurn",  null);
 			moveLaneTitans.setAccessible(true);
@@ -1424,6 +1908,11 @@ public class Milestone2PublicTests {
 
 
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
 			Object laneObject2 =  constructor.newInstance(createWall());
@@ -1455,6 +1944,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject3);
 
 			lanesField.set(battle, lanesPQ);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			Method moveLaneTitans= Class.forName(battlePath).getDeclaredMethod("performTurn",  null);
 			moveLaneTitans.setAccessible(true);
@@ -1498,6 +1990,13 @@ public class Milestone2PublicTests {
 			lanesField.setAccessible(true);
 			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
 
+
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			int value=0;
 
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
@@ -1514,6 +2013,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject3);
 
 			lanesField.set(battle, lanesPQ);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
 			Field scoreField= Class.forName(battlePath).getDeclaredField("score");
 			scoreField.setAccessible(true);
 			int random6 = (int) (Math.random() * 10) + 1; 
@@ -1537,6 +2039,62 @@ public class Milestone2PublicTests {
 	}
 
 	@Test(timeout=1000)
+	public void testperformTitansAttacksBattle() {
+
+		Constructor<?> battleConstructor;
+		try {
+			battleConstructor = Class.forName(battlePath).getConstructor(int.class,int.class,int.class,int.class,int.class);
+			int random1 = (int) (Math.random() * 10) + 5;
+			int random2 = (int) (Math.random() * 10) + 5;
+			int random3 = (int) (Math.random() * 10) + 5;
+			int random4 = (int) (Math.random() * 10) + 5;
+			int random5 = (int) (Math.random() * 10) + 1; 
+			Object battle = battleConstructor.newInstance(random1,random2,random3,random4,random5);
+
+			Field lanesField= Class.forName(battlePath).getDeclaredField("lanes");
+			lanesField.setAccessible(true);
+			PriorityQueue<Object> lanesPQ= new PriorityQueue<>();
+
+			int value=0;
+
+			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
+			Object laneObject =  constructor.newInstance(createWall());
+			Object laneObject2 =  constructor.newInstance(createWall());
+			Object laneObject3 =  constructor.newInstance(createWall());
+
+			value+=returnResourceGatheredTitans(laneObject);
+			value+=returnResourceGatheredTitans(laneObject2);
+			returnResourceGatheredTitans(laneObject3);
+			lanesPQ.add(laneObject);
+			lanesPQ.add(laneObject2);
+
+			lanesField.set(battle, lanesPQ);
+			
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
+			originalLanes.addAll(lanesPQ);
+			originalLanes.add(laneObject3);
+			originalLanesField.set(battle, originalLanes);
+			
+			Method performTitansAttacksmethod=Class.forName(battlePath).getDeclaredMethod("performTitansAttacks",  null);
+			performTitansAttacksmethod.setAccessible(true);
+			
+			assertEquals("Incorrect resources gathered value from calling performTitansAttacks.In battle all active lane titans, that has reached the wall, should perfom their attack on their lane wall.", 
+					value, performTitansAttacksmethod.invoke(battle));
+
+
+		} catch (NoSuchMethodException | SecurityException | ClassNotFoundException | 
+				InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
+		}
+	}
+	
+	@Test(timeout=1000)
 	public void testPerformTurnPerformTitansAttacksBattleLaneLost() {
 
 		Constructor<?> battleConstructor;
@@ -1554,6 +2112,11 @@ public class Milestone2PublicTests {
 			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
 
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
 			Object laneObject2 =  constructor.newInstance(createWall());
@@ -1568,6 +2131,8 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject3);
 
 			lanesField.set(battle, lanesPQ);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			Method performTurnPerformTitansAttacksmethod=Class.forName(battlePath).getDeclaredMethod("performTurn",  null);
 			performTurnPerformTitansAttacksmethod.setAccessible(true);
@@ -1606,6 +2171,11 @@ public class Milestone2PublicTests {
 			PriorityQueue<Object> lanesPQ= new PriorityQueue<>();
 
 
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
 			Field turnTitans= Class.forName(battlePath).getDeclaredField("numberOfTitansPerTurn");
 			turnTitans.setAccessible(true);
 			turnTitans.set(battle, 0);
@@ -1632,6 +2202,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject3);
 
 			lanesField.set(battle, lanesPQ);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			Method performTurnMethod= Class.forName(battlePath).getDeclaredMethod("performTurn",  null);
 			performTurnMethod.setAccessible(true);
@@ -1666,6 +2239,13 @@ public class Milestone2PublicTests {
 			lanesField.setAccessible(true);
 			PriorityQueue<Object> lanesPQ= new PriorityQueue<>();
 
+
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Field numberOfTitansPerTurn= Class.forName(battlePath).getDeclaredField("numberOfTitansPerTurn");
 			numberOfTitansPerTurn.setAccessible(true);
 			numberOfTitansPerTurn.set(battle, 0);
@@ -1690,12 +2270,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject2);
 			lanesPQ.add(laneObject);
 			lanesPQ.add(laneObject4);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
-			//			ArrayList<Object> array= new ArrayList<>();
-			//			while(!lanesPQ.isEmpty()) {
-			//				Object object = lanesPQ.poll();
-			//				array.add(object);
-			//			}
 			PriorityQueue<Integer> array= new PriorityQueue<>();
 			array.add(dl1);
 			array.add(dl2);
@@ -1716,12 +2293,16 @@ public class Milestone2PublicTests {
 			((PriorityQueue<Object>)lanesField.get(battle)).add(laneObject);
 
 
+
 			Method updatelaneDangerLevelMethod= Class.forName(battlePath).getDeclaredMethod("performTurn",  null);
 			updatelaneDangerLevelMethod.setAccessible(true);
 			updatelaneDangerLevelMethod.invoke(battle);
 			lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
 
+			if(lanesPQ.isEmpty()) {
+				fail("lanes PriorityQueue should NOT be be empty");
 
+			}
 			while(!lanesPQ.isEmpty())  {
 				Object object = lanesPQ.poll();
 				int x=array.poll();
@@ -1834,6 +2415,11 @@ public class Milestone2PublicTests {
 
 
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall2());
 			Object laneObject2 =  constructor.newInstance(createWall());
@@ -1860,6 +2446,9 @@ public class Milestone2PublicTests {
 
 
 			lanesField.set(battle, lanesPQ);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			Method performTurn= Class.forName(battlePath).getDeclaredMethod("performTurn",  null);
 			performTurn.setAccessible(true);
@@ -1900,6 +2489,11 @@ public class Milestone2PublicTests {
 			PriorityQueue<Object> lanesPQ= new PriorityQueue<>();
 
 
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
 
@@ -1928,6 +2522,8 @@ public class Milestone2PublicTests {
 
 
 			lanesField.set(battle, lanesPQ);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			Method performTurn= Class.forName(battlePath).getDeclaredMethod("performTurn",  null);
 			performTurn.setAccessible(true);
@@ -1968,6 +2564,11 @@ public class Milestone2PublicTests {
 			PriorityQueue<Object> lanesPQ= new PriorityQueue<>();
 
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
 
@@ -1996,6 +2597,9 @@ public class Milestone2PublicTests {
 
 
 			lanesField.set(battle, lanesPQ);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			Method performTurn= Class.forName(battlePath).getDeclaredMethod("passTurn",  null);
 			performTurn.setAccessible(true);
@@ -2038,6 +2642,11 @@ public class Milestone2PublicTests {
 
 
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object wall=createWall();
 			Object laneObject =  constructor.newInstance(wall);
@@ -2072,6 +2681,9 @@ public class Milestone2PublicTests {
 
 
 			lanesField.set(battle, lanesPQ);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			Method performTurn= Class.forName(battlePath).getDeclaredMethod("performTurn",  null);
 			performTurn.setAccessible(true);
@@ -2114,6 +2726,11 @@ public class Milestone2PublicTests {
 
 
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object wall=createWall();
 			Object laneObject =  constructor.newInstance(wall);
@@ -2148,6 +2765,9 @@ public class Milestone2PublicTests {
 
 
 			lanesField.set(battle, lanesPQ);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			Method performTurn= Class.forName(battlePath).getDeclaredMethod("performTurn",  null);
 			performTurn.setAccessible(true);
@@ -2259,6 +2879,12 @@ public class Milestone2PublicTests {
 
 			lanesPQ= new PriorityQueue<>();
 
+
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
 			Object laneObject2 =  constructor.newInstance(createWall());
@@ -2285,6 +2911,10 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject2);
 			lanesPQ.add(laneObject);
 			lanesField.set(battle, lanesPQ);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
 			Object titan= createPureTitan();
 			Field dangerLevelField= Class.forName(titanClassPath).getDeclaredField("dangerLevel");
 			dangerLevelField.setAccessible(true);
@@ -2340,6 +2970,13 @@ public class Milestone2PublicTests {
 
 			lanesPQ= new PriorityQueue<>();
 
+
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
 			Object laneObject2 =  constructor.newInstance(createWall());
@@ -2363,6 +3000,10 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject2);
 			lanesPQ.add(laneObject);
 			lanesField.set(battle, lanesPQ);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
 			Object titan= createPureTitan();
 			int value=0;
 			Field dangerLevelField= Class.forName(titanClassPath).getDeclaredField("dangerLevel");
@@ -2427,6 +3068,11 @@ public class Milestone2PublicTests {
 
 			lanesPQ= new PriorityQueue<>();
 
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
 			Object laneObject2 =  constructor.newInstance(createWall());
@@ -2450,6 +3096,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject2);
 			lanesPQ.add(laneObject);
 			lanesField.set(battle, lanesPQ);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
 			Object titan= createPureTitan();
 			int value=0;
 			Field dangerLevelField= Class.forName(titanClassPath).getDeclaredField("dangerLevel");
@@ -2523,6 +3172,12 @@ public class Milestone2PublicTests {
 
 			lanesPQ= new PriorityQueue<>();
 
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
 			Object laneObject2 =  constructor.newInstance(createWall());
@@ -2546,6 +3201,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject2);
 			lanesPQ.add(laneObject);
 			lanesField.set(battle, lanesPQ);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
 			Object titan= createPureTitan();
 			int value=0;
 			Field dangerLevelField= Class.forName(titanClassPath).getDeclaredField("dangerLevel");
@@ -2591,7 +3249,7 @@ public class Milestone2PublicTests {
 		}
 
 	}
-
+	
 	@Test(timeout=1000)
 	public void testPerformTurnTitanAttackBeforeAddTitan() {
 
@@ -2612,6 +3270,11 @@ public class Milestone2PublicTests {
 			lanesField.setAccessible(true);
 			PriorityQueue<Object> lanesPQ= new PriorityQueue<>();
 
+
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
 
 
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
@@ -2653,6 +3316,9 @@ public class Milestone2PublicTests {
 
 
 			lanesField.set(battle, lanesPQ);
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			Object titan2= createPureTitan();
 
@@ -2720,6 +3386,11 @@ public class Milestone2PublicTests {
 
 
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object wall=createWall();
 			Object laneObject =  constructor.newInstance(wall);
@@ -2759,6 +3430,8 @@ public class Milestone2PublicTests {
 
 
 			lanesField.set(battle, lanesPQ);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
 
 			Object titan2= createPureTitan();
 
@@ -2808,6 +3481,120 @@ public class Milestone2PublicTests {
 
 
 
+	@Test(timeout=1000)
+	public void testAddTurnTitansOriginalLanes() {
+		
+		Constructor<?> battleConstructor;
+
+		try {
+			battleConstructor = Class.forName(battlePath).getConstructor(int.class,int.class,int.class,int.class,int.class);
+			int random1 = (int) (Math.random() * 10) + 1;
+			int random2 = (int) (Math.random() * 10) + 1;
+			int random3 = (int) (Math.random() * 10) + 1;
+			int random4 = (int) (Math.random() * 10) + 1;
+			int random5 = (int) (Math.random() * 10) + 1; 
+			Object battle = battleConstructor.newInstance(random1,random2,random3,random4,random5);
+
+			Field lanesField= Class.forName(battlePath).getDeclaredField("lanes");
+			lanesField.setAccessible(true);
+			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
+
+			lanesPQ= new PriorityQueue<>();
+
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
+			Object laneObject =  constructor.newInstance(createWall());
+			Object laneObject2 =  constructor.newInstance(createWall());
+			Object laneObject3 =  constructor.newInstance(createWall());
+			Object laneObject4 =  constructor.newInstance(createWall());
+
+			int dangerLevel1= returnLaneDangerLevel(laneObject);
+			int dangerLevel2= returnLaneDangerLevel(laneObject2);
+			while(dangerLevel1==dangerLevel2) {
+				dangerLevel2= returnLaneDangerLevel(laneObject2);
+			}
+			PriorityQueue<Object> titansPQ= new PriorityQueue<>();
+			titansPQ.add(createAbnormalTitanFixed());
+
+			Field titansLaneField= Class.forName(lanePath).getDeclaredField("titans");
+			titansLaneField.setAccessible(true);
+			titansLaneField.set(laneObject4, titansPQ);
+
+			Field dangerLevelFieldLane= Class.forName(lanePath).getDeclaredField("dangerLevel");
+			dangerLevelFieldLane.setAccessible(true);
+			dangerLevelFieldLane.set(laneObject4, 0);
+			dangerLevelFieldLane.set(laneObject3, 0);
+			dangerLevelFieldLane.set(laneObject2, dangerLevel2);
+			dangerLevelFieldLane.set(laneObject, dangerLevel1);
+
+			PriorityQueue<Object> dangerLevel= new PriorityQueue<>();
+			dangerLevel.add(laneObject4);
+			dangerLevel.add(laneObject2);
+			dangerLevel.add(laneObject);
+
+			lanesPQ.add(laneObject4);
+			lanesPQ.add(laneObject2);
+			lanesPQ.add(laneObject);
+			lanesField.set(battle, lanesPQ);
+			
+			originalLanes.add(laneObject3);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
+			Object titan= createPureTitan();
+			Object titan2= createPureTitan();
+			Object titan3= createPureTitan();
+			Object titan4= createPureTitan();
+			Field dangerLevelField= Class.forName(titanClassPath).getDeclaredField("dangerLevel");
+			dangerLevelField.setAccessible(true);
+
+			int random6 = (int) (Math.random() * 2) + 5;
+			dangerLevelField.set(titan,random6 );
+
+			Field approachingTitans=  Class.forName(battlePath).getDeclaredField("approachingTitans");
+			approachingTitans.setAccessible(true);
+			approachingTitans.set(battle, new ArrayList<>());
+			((ArrayList<Object>)approachingTitans.get(battle)).add(titan);
+			((ArrayList<Object>)approachingTitans.get(battle)).add(titan2);
+			((ArrayList<Object>)approachingTitans.get(battle)).add(titan3);
+			((ArrayList<Object>)approachingTitans.get(battle)).add(titan4);
+
+			Field numberOfTitansPerTurnField= Class.forName(battlePath).getDeclaredField("numberOfTitansPerTurn");
+			numberOfTitansPerTurnField.setAccessible(true);
+			numberOfTitansPerTurnField.set(battle, 2);
+
+			Method m= Class.forName(battlePath).getDeclaredMethod("addTurnTitansToLane", null);
+			m.setAccessible(true);
+			m.invoke(battle);
+
+			assertFalse("addTurnTitansToLane should add the titans to the least danger ACTIVE lane",
+					((PriorityQueue<Object>)titansLaneField.get(laneObject3)).contains(titan));
+			assertFalse("addTurnTitansToLane should add the titans to the least danger ACTIVE lane",
+					((PriorityQueue<Object>)titansLaneField.get(laneObject3)).contains(titan2));
+			assertFalse("addTurnTitansToLane should add the titans to the least danger ACTIVE lane",
+					((PriorityQueue<Object>)titansLaneField.get(laneObject3)).contains(titan3));
+			assertFalse("addTurnTitansToLane should add the titans to the least danger ACTIVE lane",
+					((PriorityQueue<Object>)titansLaneField.get(laneObject3)).contains(titan4));
+			assertFalse("addTurnTitansToLane should add the titans to the least danger ACTIVE lane",
+					((PriorityQueue<Object>)titansLaneField.get(laneObject3)).contains(titan));
+			assertFalse("addTurnTitansToLane should add the titans to the least danger ACTIVE lane",
+					((PriorityQueue<Object>)titansLaneField.get(laneObject3)).contains(titan2));
+
+
+
+
+		} catch (NoSuchMethodException | SecurityException | ClassNotFoundException |
+				InstantiationException | IllegalAccessException | IllegalArgumentException | 
+				InvocationTargetException | NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
+		}
+	}
 
 	@Test(timeout=1000)
 	public void testAddTurnTitansToLaneBattlePassTurnOnce() {
@@ -2827,6 +3614,11 @@ public class Milestone2PublicTests {
 			PriorityQueue<Object> lanesPQ= (PriorityQueue<Object>) lanesField.get(battle);
 
 			lanesPQ= new PriorityQueue<>();
+
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
 
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
@@ -2860,6 +3652,9 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject2);
 			lanesPQ.add(laneObject);
 			lanesField.set(battle, lanesPQ);
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+
 			Object titan= createPureTitan();
 			Object titan2= createPureTitan();
 			Object titan3= createPureTitan();
@@ -2984,7 +3779,6 @@ public class Milestone2PublicTests {
 			ArrayList<Object> t =(ArrayList<Object>) f2.get(b);
 			boolean correct = true;
 			if(t.size()!=7) {
-				System.out.println("here");
 				correct=false;}
 			else {
 				for(int i=0;i<3;i++) {
@@ -3046,7 +3840,6 @@ public class Milestone2PublicTests {
 			ArrayList<Object> t =(ArrayList<Object>) f2.get(b);
 			boolean correct = true;
 			if(t.size()!=7) {
-				System.out.println("here");
 				correct=false;}
 			else {
 				for(int i=0;i<3;i++) {
@@ -3198,6 +3991,7 @@ public class Milestone2PublicTests {
 			Object b = constructor.newInstance(numberOfTurns, score, titanSpawnDistance,initialNumOfLanes,initialResourcesPerLane);
 			Class<? extends Object> curr = b.getClass();
 			PriorityQueue<Object> l = new PriorityQueue<>();
+
 			Constructor<?> laneConstructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Constructor<?> wallConstructor = Class.forName(wallPath).getConstructor(int.class);
 			Constructor<?> pureTitanConstructor = Class.forName(PureTitanClassPath).getConstructor(int.class,int.class,int.class,int.class,int.class,int.class,int.class);
@@ -3234,6 +4028,13 @@ public class Milestone2PublicTests {
 			f2.set(b, l);
 
 
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+			originalLanes.addAll(l);
+			originalLanesField.set(b, originalLanes);
 			Field f3 = null;
 			f3 = curr.getDeclaredField("approachingTitans");
 			f3.setAccessible(true);
@@ -3331,7 +4132,12 @@ public class Milestone2PublicTests {
 			f2.setAccessible(true);
 			f2.set(b, l);
 
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
 
+			originalLanes.addAll(l);
+			originalLanesField.set(b, originalLanes);
 			Field f3 = null;
 			f3 = curr.getDeclaredField("approachingTitans");
 			f3.setAccessible(true);
@@ -3416,7 +4222,12 @@ public class Milestone2PublicTests {
 			f2 = curr.getDeclaredField("lanes");
 			f2.setAccessible(true);
 			f2.set(b, l);
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
 
+			originalLanes.addAll(l);
+			originalLanesField.set(b, originalLanes);
 
 			Field f3 = null;
 			f3 = curr.getDeclaredField("approachingTitans");
@@ -3453,8 +4264,104 @@ public class Milestone2PublicTests {
 
 	}
 
+	@Test(timeout = 1000)
+	public void testAddTurnTitansToLaneBattleNotEmptyApproachingTitans2(){
+		int numberOfTurns = (int) (Math.random() * 10) + 1;
+		int score = (int) (Math.random() * 10) + 1;
+		int titanSpawnDistance = (int) (Math.random() * 10) + 1;
+		int initialNumOfLanes = (int) (Math.random() * 10) + 1;
+		int initialResourcesPerLane = (int) (Math.random() * 10) + 1;
+		int baseHealth = 100;
+		int baseDamage = (int) (Math.random() * 100);
+		int heightInMeters = (int) (Math.random() * 5);
+		int distanceFromBase = (int) (Math.random() * 5);
+		int speed = (int) (Math.random() * 5);
+		int dangerLevel = (int) (Math.random() * 5);
+		int resourcesValue = (int) (Math.random() * 5);
+		try {
+			Constructor<?> constructor = Class.forName(battlePath).getConstructor( int.class, int.class, int.class,int.class, int.class);
+			Object b = constructor.newInstance(numberOfTurns, score, titanSpawnDistance,initialNumOfLanes,initialResourcesPerLane);
+			Class<? extends Object> curr = b.getClass();
+			PriorityQueue<Object> l = new PriorityQueue<>();
+			Constructor<?> laneConstructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
+			Constructor<?> wallConstructor = Class.forName(wallPath).getConstructor(int.class);
+			Constructor<?> pureTitanConstructor = Class.forName(PureTitanClassPath).getConstructor(int.class,int.class,int.class,int.class,int.class,int.class,int.class);
+			Object pureTitan = pureTitanConstructor.newInstance(baseHealth, baseDamage, heightInMeters, distanceFromBase,speed,resourcesValue,dangerLevel);		
+			Constructor<?> abnormalTitanconstructor = Class.forName(AbnormalTitanClassPath).getConstructor(int.class,int.class,int.class,int.class,int.class,int.class,int.class);
+			Object abnormalTitan =  abnormalTitanconstructor.newInstance(baseHealth, baseDamage, heightInMeters, distanceFromBase,speed,resourcesValue,dangerLevel);
+			Object pureTitan2 = pureTitanConstructor.newInstance(baseHealth, baseDamage, heightInMeters, distanceFromBase,speed,resourcesValue,dangerLevel);		
+			Object wall1 = wallConstructor.newInstance(1);
+			Object lane1 = laneConstructor.newInstance(wall1);
+			Object wall2 = wallConstructor.newInstance(2);
+			Object lane2 = laneConstructor.newInstance(wall2);
+			Object wall3 = wallConstructor.newInstance(3);
+			Object lane3 = laneConstructor.newInstance(wall3);
+			l.add(lane1);
+			l.add(lane2);
+			l.add(lane3);
+			Object early= Enum.valueOf((Class<Enum>) Class.forName(battlePhasePath), "EARLY");
+			ArrayList<Object> appTitans = new ArrayList<>();
+			appTitans.add(pureTitan);
+			appTitans.add(abnormalTitan);
 
-	//	
+
+			Field f = null;
+			f = curr.getDeclaredField("battlePhase");
+			f.setAccessible(true);
+			f.set(b, early);
+
+			Field numberOfTitansPerTurnField= curr.getDeclaredField("numberOfTitansPerTurn");
+			numberOfTitansPerTurnField.setAccessible(true);
+			numberOfTitansPerTurnField.set(b, 3);
+
+			Field f2 = null;
+			f2 = curr.getDeclaredField("lanes");
+			f2.setAccessible(true);
+			f2.set(b, l);
+
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+			originalLanes.addAll(l);
+			originalLanesField.set(b, originalLanes);
+			Field f3 = null;
+			f3 = curr.getDeclaredField("approachingTitans");
+			f3.setAccessible(true);
+			f3.set(b, appTitans);
+
+			ArrayList<Object> t =(ArrayList<Object>) f3.get(b);
+			Method m = null;
+			m = b.getClass().getDeclaredMethod("addTurnTitansToLane");
+			m.setAccessible(true);
+			try {
+				m.invoke(b);
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				fail("Please check the console for the error, its an error from this catch statment."+e.getClass()+" occured");
+			}
+
+			t =(ArrayList<Object>) f3.get(b);
+			boolean correct = true;
+			if(t.size()!=6)
+				correct=false;
+			assertEquals(
+					"The method addTurnTitansToLane() should refill approachingTitans if it became empty."+"",true, correct);
+		}
+		catch (NoSuchMethodException | SecurityException | ClassNotFoundException | 
+				InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Please check the console for the error, its an error from this catch statment."+e.getClass()+" occured");
+		}
+
+
+
+	}
+
+
+
 
 
 
@@ -3669,20 +4576,20 @@ public class Milestone2PublicTests {
 			Object titan3= createAbnormalTitan();
 			Field titanDistanceField= Class.forName(titanClassPath).getDeclaredField("distanceFromBase");
 			titanDistanceField.setAccessible(true);
-			titanDistanceField.set(titan, 20);
-			titanDistanceField.set(titan2, 10);
+			titanDistanceField.set(titan, 30);
+			titanDistanceField.set(titan2, 30);
 			titanDistanceField.set(titan3, 30);
 
 			ArrayList<Object> array= new ArrayList<>();
 			array.add(titan2);
-			array.add(titan);
 			array.add(titan3);
+			array.add(titan);
 
 			Field titanSpeedField= Class.forName(titanClassPath).getDeclaredField("speed");
 			titanSpeedField.setAccessible(true);
 			titanSpeedField.set(titan, 5);
-			titanSpeedField.set(titan2, 5);
-			titanSpeedField.set(titan3, 5);
+			titanSpeedField.set(titan2, 15);
+			titanSpeedField.set(titan3, 10);
 
 			PriorityQueue<Object> titansPQ= (PriorityQueue<Object>) titansField.get(laneObject);
 			titansPQ.add(titan);
@@ -3698,8 +4605,14 @@ public class Milestone2PublicTests {
 			titansPQ= (PriorityQueue<Object>) titansField.get(laneObject);
 
 			int i =0;
-			for (Object object : titansPQ) {
+			if(titansPQ.isEmpty()) {
+				fail("Titans should be sorted correctly after moving, and no titans should be removed");
 
+			}
+			while (!titansPQ.isEmpty()) {
+				Object object = titansPQ.poll();
+				if(object==null)
+					fail("Titans should be sorted correctly after moving, and no titans should be removed");
 				assertTrue("Titans should be sorted correctly after moving",object.equals(array.get(i)));
 				i++;
 
@@ -5211,10 +6124,60 @@ public class Milestone2PublicTests {
 		} catch (InvocationTargetException e) {
 			Throwable thrownException = e.getTargetException();
 			assertNotNull("Expected exception was thrown", thrownException);
-			assertTrue("Expected invalidLaneExceptionPath was not thrown",
+			assertTrue("Expected invalidLaneException was not thrown",
 					InvalidLaneException.isInstance(thrownException));
 		}
 		catch(ClassNotFoundException| NoSuchMethodException| SecurityException| InstantiationException| IllegalAccessException| IllegalArgumentException e){
+			e.printStackTrace();
+			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
+		}
+	}	
+	@Test(timeout = 1000)
+	public void testPurchaseWeaponFailCase2() {
+		
+		Class<?> InvalidLaneException = null;
+		try {
+			int numberOfTurns = (int) (Math.random() * 20) + 1;
+			int score = (int) (Math.random() * 20) + 1;
+			int titanSpawnDistance = (int) (Math.random() * 20) + 1;
+			int initialNumOfLanes = (int) (Math.random() * 20) + 1;
+			int initialResourcesPerLane = (int) (Math.random() * 20) + 1;
+			
+			int wallHealth = (int)(Math.random()*20)+10001;
+			int weaponCode = (int)(Math.random()*4)+1;
+			
+			InvalidLaneException = Class.forName(invalidLaneExceptionPath);
+			Class laneClass = Class.forName(lanePath);
+			
+			Class battleClass = Class.forName(battlePath);
+			Constructor<?> battleConstructor = Class.forName(battlePath).getConstructor(int.class,int.class,int.class,int.class,int.class);
+			Object battle = battleConstructor.newInstance(numberOfTurns,score,titanSpawnDistance,initialNumOfLanes,initialResourcesPerLane);
+			
+			Class [] attributes = {int.class,laneClass};
+			Method purchase_weapon = battleClass.getDeclaredMethod("purchaseWeapon", attributes);
+			
+			Class wallClass = Class.forName(wallPath);
+			Constructor<?> wallConstructor = Class.forName(wallPath).getConstructor(int.class);
+			Object wall = wallConstructor.newInstance(wallHealth);
+			
+			Constructor<?> laneConstructor = Class.forName(lanePath).getConstructor(wallClass);
+			Object lane = laneConstructor.newInstance(wall);
+			
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+			originalLanes.add(lane);
+			originalLanesField.set(battle, originalLanes);
+			
+			purchase_weapon.invoke(battle,weaponCode,lane); 
+			fail("Expected InvalidLaneException was not thrown");
+		} catch (InvocationTargetException e) {
+			Throwable thrownException = e.getTargetException();
+			assertNotNull("Expected exception was thrown", thrownException);
+			assertTrue("Expected invalidLaneException was not thrown",
+					InvalidLaneException.isInstance(thrownException));
+		}
+		catch(ClassNotFoundException| NoSuchMethodException| NoSuchFieldException|SecurityException| InstantiationException| IllegalAccessException| IllegalArgumentException e){
 			e.printStackTrace();
 			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
 		}
@@ -5276,7 +6239,13 @@ public class Milestone2PublicTests {
 			Method getLanes = battleClass.getDeclaredMethod("getLanes", null);
 			PriorityQueue<Object> lanes = (PriorityQueue<Object>) getLanes.invoke(battle, null);
 			lanes.add(lane);
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
 
+			originalLanes.addAll(lanes);
+			originalLanesField.set(battle, originalLanes);
+//			
 			Class[] attributes = {int.class, laneClass};
 			Method purchase_weapon = battleClass.getDeclaredMethod("purchaseWeapon", attributes);
 			purchase_weapon.invoke(battle, weaponCode, lane);
@@ -5293,7 +6262,7 @@ public class Milestone2PublicTests {
 			}
 
 			assertTrue("The 2 arrayLists should have the same weapons ", equalContent);
-		}catch(InvocationTargetException e1) {
+		}catch(InvocationTargetException|NoSuchFieldException e1) {
 			e1.printStackTrace();
 			fail("Incorrect Weapon,Please check the console for the error");
 		}
@@ -5351,6 +6320,14 @@ public class Milestone2PublicTests {
 			Method getLanes = battleClass.getDeclaredMethod("getLanes", null);
 			PriorityQueue<Object> lanes = (PriorityQueue<Object>) getLanes.invoke(battle, null);
 			lanes.add(lane);
+			
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+			originalLanes.addAll(lanes);
+			originalLanesField.set(battle, originalLanes);
+//			
 
 			Class[] attributes = {int.class, laneClass};
 			Method purchase_weapon = battleClass.getDeclaredMethod("purchaseWeapon", attributes);
@@ -5374,6 +6351,10 @@ public class Milestone2PublicTests {
 
 		}
 		catch(ClassNotFoundException|NoSuchMethodException| SecurityException| InstantiationException| IllegalAccessException| IllegalArgumentException e){
+			e.printStackTrace();
+			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
 		}
@@ -5425,7 +6406,13 @@ public class Milestone2PublicTests {
 			Method getLanes = battleClass.getDeclaredMethod("getLanes", null);
 			PriorityQueue<Object> lanes = (PriorityQueue<Object>) getLanes.invoke(battle, null);
 			lanes.add(lane);
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
 
+			originalLanes.addAll(lanes);
+			originalLanesField.set(battle, originalLanes);
+//			
 			Class[] attributes = {int.class, laneClass};
 			Method purchase_weapon = battleClass.getDeclaredMethod("purchaseWeapon", attributes);
 			purchase_weapon.invoke(battle, weaponCode, lane);
@@ -5436,7 +6423,7 @@ public class Milestone2PublicTests {
 			e1.printStackTrace();
 			fail("Incorrect Weapon,Please check the console for the error");
 		}
-		catch(ClassNotFoundException|NoSuchMethodException| SecurityException| InstantiationException| IllegalAccessException| IllegalArgumentException e){
+		catch(ClassNotFoundException|NoSuchMethodException| SecurityException|NoSuchFieldException| InstantiationException| IllegalAccessException| IllegalArgumentException e){
 			e.printStackTrace();
 			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
 		}
@@ -5478,7 +6465,13 @@ public class Milestone2PublicTests {
 			Method getLanes = battleClass.getDeclaredMethod("getLanes", null);
 			PriorityQueue<Object> lanes = (PriorityQueue<Object>) getLanes.invoke(battle, null);
 			lanes.add(lane);
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
 
+			originalLanes.addAll(lanes);
+			originalLanesField.set(battle, originalLanes);
+//			
 			Class[] attributes = {int.class, laneClass};
 			Method purchase_weapon = battleClass.getDeclaredMethod("purchaseWeapon", attributes);
 
@@ -5495,6 +6488,10 @@ public class Milestone2PublicTests {
 
 		}
 		catch(ClassNotFoundException|NoSuchMethodException| SecurityException| InstantiationException| IllegalAccessException| IllegalArgumentException e){
+			e.printStackTrace();
+			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
 		}
@@ -5530,7 +6527,8 @@ public class Milestone2PublicTests {
 			Field lanesField= Class.forName(battlePath).getDeclaredField("lanes");
 			lanesField.setAccessible(true);
 			PriorityQueue<Object> lanesPQ= new PriorityQueue<>();
-
+			
+			
 
 			Constructor<?> constructor = Class.forName(lanePath).getConstructor(Class.forName(wallPath));
 			Object laneObject =  constructor.newInstance(createWall());
@@ -5554,6 +6552,14 @@ public class Milestone2PublicTests {
 			lanesPQ.add(laneObject);
 
 			lanesField.set(battle, lanesPQ);
+			
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+//			
 
 			Class<?> weaponFactoryClass = Class.forName(weaponFactoryPath);
 			Constructor<?> weaponFactoryConstructor = Class.forName(weaponFactoryPath).getConstructor();
@@ -5627,10 +6633,17 @@ public class Milestone2PublicTests {
 			Method getLanes = battleClass.getDeclaredMethod("getLanes", null);
 			PriorityQueue<Object> lanes = (PriorityQueue<Object>) getLanes.invoke(battle, null);
 			lanes.clear();
+			Field originalLanesField= Class.forName(battlePath).getDeclaredField("originalLanes");
+			originalLanesField.setAccessible(true);
+			ArrayList<Object> originalLanes= new ArrayList<>();
+
+//			originalLanes.addAll(lanesPQ);
+			originalLanesField.set(battle, originalLanes);
+//			
 			boolean isGameOverOutput = (boolean) isGameOver.invoke(battle);
 			assertTrue("Expected True but was " + isGameOverOutput, isGameOverOutput);
 		}
-		catch( ClassNotFoundException| NoSuchMethodException| IllegalAccessException|InvocationTargetException| InstantiationException e){
+		catch( ClassNotFoundException| NoSuchMethodException| NoSuchFieldException|IllegalAccessException|InvocationTargetException| InstantiationException e){
 			e.printStackTrace();
 			fail("Please check the console for the error, its an error from this catch statement."+e.getClass()+" occurred");
 		}
@@ -6685,7 +7698,7 @@ public class Milestone2PublicTests {
 	}
 
 	@Test(timeout=1000)
-	public void testSniperWeaponTurnAttackOnDeathOfClosestTitan6() {
+	public void testWallTrapWeaponTurnAttackOnDeathOfClosestTitan6() {
 		try {
 			Class Titan = Class.forName(titanClassPath);
 			PriorityQueue<Object> laneTitans = new PriorityQueue<>();
@@ -6699,7 +7712,7 @@ public class Milestone2PublicTests {
 
 			Constructor<?> constructor = Class.forName(ColossalTitanClassPath).getConstructor(int.class,int.class,int.class,int.class,int.class,int.class,int.class);
 			Object colossalTitan1 =  constructor.newInstance(80, 20, 10, distanceColossalTitan1, 15, 15, 2);
-			Object colossalTitan2 =  constructor.newInstance(20, 20, 10,  distanceColossalTitan2, 15, resourcesColossalTitan2, 2);
+			Object colossalTitan2 =  constructor.newInstance(20, 20, 10,  0, 15, resourcesColossalTitan2, 2);
 
 			Constructor<?> constructor2 = Class.forName(ArmoredTitanClassPath).getConstructor(int.class,int.class,int.class,int.class,int.class,int.class,int.class);
 			Object armoredTitan1 =  constructor2.newInstance(20,  20, 10, distanceArmoredTitan1, 15, 15, 2);
@@ -6708,12 +7721,12 @@ public class Milestone2PublicTests {
 			laneTitans.add(colossalTitan1); laneTitans.add(colossalTitan2);
 			laneTitans.add(armoredTitan1);  laneTitans.add(armoredTitan2);
 
-			Class sniperWeaponClass = Class.forName(sniperCannonPath);
-			Constructor<?> sniperWeaponConstructor = sniperWeaponClass.getConstructor(int.class);
-			Object sniperWeapon = sniperWeaponConstructor.newInstance(20);
+			Class wallTrapWeaponClass = Class.forName(wallTrapPath);
+			Constructor<?> wallTrapWeaponConstructor = wallTrapWeaponClass.getConstructor(int.class);
+			Object wallTrapWeapon = wallTrapWeaponConstructor.newInstance(20);
 
-			Method turnAttack = sniperWeaponClass.getDeclaredMethod("turnAttack", PriorityQueue.class);
-			int returnedResources = (int) turnAttack.invoke(sniperWeapon, laneTitans);
+			Method turnAttack = wallTrapWeaponClass.getDeclaredMethod("turnAttack", PriorityQueue.class);
+			int returnedResources = (int) turnAttack.invoke(wallTrapWeapon, laneTitans);
 
 			assertEquals(resourcesColossalTitan2, returnedResources); 
 
@@ -7364,8 +8377,12 @@ public class Milestone2PublicTests {
 
 
 			int i =0;
+			if(titansPQ.isEmpty())
+				fail("Non-defeated titans should NOT be removed from the pripority queue during thre attack");
 			while(!titansPQ.isEmpty()) {
 				Object object= titansPQ.poll();
+				if(object==null)
+					fail("Non-defeated titans should NOT be removed from the pripority queue during thre attack");
 				assertTrue("Titans should be sorted correctly",object.equals(array.get(i)));
 				i++;
 
@@ -7412,8 +8429,12 @@ public class Milestone2PublicTests {
 			turnAttack.invoke(sniperWeapon, titansPQ);
 
 			int i =0;
+			if(titansPQ.isEmpty())
+				fail("Non-defeated titans should NOT be removed from the pripority queue during thre attack");
 			while(!titansPQ.isEmpty()) {
 				Object object= titansPQ.poll();
+				if(object==null)
+					fail("Non-defeated titans should NOT be removed from the pripority queue during thre attack");
 				assertTrue("Titans should be sorted correctly",object.equals(array.get(i)));
 				i++;	
 			}
