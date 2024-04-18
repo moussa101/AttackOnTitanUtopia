@@ -1,3 +1,21 @@
+Index: src/game/engine/Battle.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package game.engine;\r\n\r\nimport java.io.IOException;\r\nimport java.util.ArrayList;\r\nimport java.util.HashMap;\r\nimport java.util.PriorityQueue;\r\n\r\nimport game.engine.base.Wall;\r\nimport game.engine.dataloader.DataLoader;\r\nimport game.engine.lanes.Lane;\r\nimport game.engine.titans.Titan;\r\nimport game.engine.titans.TitanRegistry;\r\nimport game.engine.weapons.factory.WeaponFactory;\r\n\r\npublic class Battle {\r\n\r\n    private final static int[][] PHASES_APPROACHING_TITANS =\r\n            {{ 1, 1, 1, 2, 1, 3, 4 }, { 2, 2, 2, 1, 3, 3, 4 }, { 4, 4, 4, 4, 4, 4, 4 } };\r\n    private final static int WALL_BASE_HEALTH =10000 ;\r\n    private final WeaponFactory weaponFactory;\r\n    private final HashMap<Integer, TitanRegistry> titansArchives;\r\n    private final  ArrayList<Titan> approachingTitans;\r\n    private\tfinal PriorityQueue<Lane> lanes;\r\n    private final ArrayList<Lane> originalLanes;\r\n    private int numberOfTurns;\r\n    private int resourcesGathered;\r\n    private BattlePhase battlePhase;\r\n    private int numberOfTitansPerTurn;\r\n    private int score;\r\n    private int titanSpawnDistance;\r\n\r\n\r\n    public int getNumberOfTurns() {\r\n        return numberOfTurns;\r\n    }\r\n\r\n    public void setNumberOfTurns(int numberOfTurns) {\r\n        this.numberOfTurns = numberOfTurns;\r\n    }\r\n\r\n    public int getResourcesGathered() {\r\n        return resourcesGathered;\r\n    }\r\n\r\n    public void setResourcesGathered(int resourcesGathered) {\r\n        this.resourcesGathered = resourcesGathered;\r\n    }\r\n\r\n    public BattlePhase getBattlePhase() {\r\n        return battlePhase;\r\n    }\r\n\r\n    public void setBattlePhase(BattlePhase battlePhase) {\r\n        this.battlePhase = battlePhase;\r\n    }\r\n\r\n    public int getNumberOfTitansPerTurn() {\r\n        return numberOfTitansPerTurn;\r\n    }\r\n\r\n    public void setNumberOfTitansPerTurn(int numberOfTitansPerTurn) {\r\n        this.numberOfTitansPerTurn = numberOfTitansPerTurn;\r\n    }\r\n\r\n    public int getScore() {\r\n        return score;\r\n    }\r\n\r\n    public void setScore(int score) {\r\n        this.score = score;\r\n    }\r\n\r\n    public int getTitanSpawnDistance() {\r\n        return titanSpawnDistance;\r\n    }\r\n\r\n    public void setTitanSpawnDistance(int titanSpawnDistance) {\r\n        this.titanSpawnDistance = titanSpawnDistance;\r\n    }\r\n\r\n    public int[][] getPHASES_APPROACHING_TITANS() {\r\n        return PHASES_APPROACHING_TITANS;\r\n    }\r\n\r\n    public int getWALL_BASE_HEALTH() {\r\n        return WALL_BASE_HEALTH;\r\n    }\r\n\r\n    public WeaponFactory getWeaponFactory() {\r\n        return weaponFactory;\r\n    }\r\n\r\n    public HashMap<Integer, TitanRegistry> getTitansArchives() {\r\n        return titansArchives;\r\n    }\r\n\r\n    public ArrayList<Titan> getApproachingTitans() {\r\n        return approachingTitans;\r\n    }\r\n\r\n    public PriorityQueue<Lane> getLanes() {\r\n        return lanes;\r\n    }\r\n\r\n    public ArrayList<Lane> getOriginalLanes() {\r\n        return originalLanes;\r\n    }\r\n\r\n\r\n\r\n    public Battle(int numberOfTurns, int score, int titanSpawnDistance, int initialNumOfLanes, int initialResourcesPerLane) throws IOException {\r\n        this.numberOfTurns = numberOfTurns;\r\n        this.score = score;\r\n        this.titanSpawnDistance = titanSpawnDistance;\r\n        this.battlePhase = BattlePhase.EARLY;\r\n        this.numberOfTitansPerTurn = 1;\r\n        resourcesGathered = initialNumOfLanes*initialResourcesPerLane;\r\n        titansArchives = DataLoader.readTitanRegistry();\r\n        approachingTitans = new ArrayList<Titan>();\r\n        lanes = new PriorityQueue<Lane>();\r\n        originalLanes = new ArrayList<Lane>();\r\n        weaponFactory = new WeaponFactory();\r\n        initializeLanes(initialNumOfLanes);\r\n\r\n    }\r\n\r\n    private void initializeLanes(int numOfLanes) {\r\n        for(int i = 0 ; i < numOfLanes;i++) {\r\n            Lane l = new Lane(new Wall(WALL_BASE_HEALTH));\r\n            originalLanes.add(l);\r\n            lanes.add(l);\r\n\r\n        }\r\n    }\r\n    ll\r\n    public void refillApproachingTitans(){\r\n        int average =0;\r\n        ArrayList<Titan> a = getApproachingTitans();\r\n        for (Titan b: a){\r\n\r\n        }\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/game/engine/Battle.java b/src/game/engine/Battle.java
+--- a/src/game/engine/Battle.java	(revision 950f86283f7b7b4d53cb0f190a9caa4f08ffcfa7)
++++ b/src/game/engine/Battle.java	(date 1713377940661)
+@@ -132,7 +132,6 @@
+ 
+         }
+     }
+-    ll
+     public void refillApproachingTitans(){
+         int average =0;
+         ArrayList<Titan> a = getApproachingTitans();
 Index: .idea/workspace.xml
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
@@ -6,27 +24,111 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/.idea/workspace.xml b/.idea/workspace.xml
---- a/.idea/workspace.xml	(revision 0a766b5cf82078b27e0e582f6fd75a850858681b)
-+++ b/.idea/workspace.xml	(date 1712687396527)
-@@ -4,10 +4,7 @@
-     <option name="autoReloadType" value="SELECTIVE" />
+--- a/.idea/workspace.xml	(revision 950f86283f7b7b4d53cb0f190a9caa4f08ffcfa7)
++++ b/.idea/workspace.xml	(date 1713377945895)
+@@ -5,7 +5,6 @@
    </component>
    <component name="ChangeListManager">
--    <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="m2 1">
+     <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="m2 1">
 -      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
--      <change beforePath="$PROJECT_DIR$/src/game/engine/Battle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/Battle.java" afterDir="false" />
--    </list>
-+    <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="m2 1" />
+       <change beforePath="$PROJECT_DIR$/src/game/engine/Battle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/Battle.java" afterDir="false" />
+     </list>
      <option name="SHOW_DIALOG" value="false" />
-     <option name="HIGHLIGHT_CONFLICTS" value="true" />
-     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
-@@ -93,8 +90,8 @@
- }</component>
+@@ -39,7 +38,7 @@
+     </favorite-branches>
+     <option name="RECENT_BRANCH_BY_REPOSITORY">
+       <map>
+-        <entry key="$PROJECT_DIR$" value="Moussa" />
++        <entry key="$PROJECT_DIR$" value="master" />
+       </map>
+     </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+@@ -58,39 +57,39 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+-    &quot;Application.WallTrap.executor&quot;: &quot;Run&quot;,
+-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+-    &quot;JUnit.GameTest.executor&quot;: &quot;Debug&quot;,
+-    &quot;JUnit.Milestone1PrivateTests.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.Milestone1PublicTests.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.Milestone1PublicTests.testLoadresourcesValueTitansCorrectly.executor&quot;: &quot;Run&quot;,
+-    &quot;Notification.DisplayName-DoNotAsk-Compiler&quot;: &quot;Build finished&quot;,
+-    &quot;Notification.DoNotAsk-Compiler&quot;: &quot;true&quot;,
+-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+-    &quot;Repository.Attach.JavaDocs&quot;: &quot;true&quot;,
+-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+-    &quot;git-widget-placeholder&quot;: &quot;Moussa&quot;,
+-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;C:/Users/abdel/OneDrive/Desktop/AttackOnTitanUtopia&quot;,
+-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;nodejs.jest.jest_package&quot;: &quot;&quot;,
+-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "ASKED_ADD_EXTERNAL_FILES": "true",
++    "Application.WallTrap.executor": "Run",
++    "Downloaded.Files.Path.Enabled": "false",
++    "JUnit.GameTest.executor": "Debug",
++    "JUnit.Milestone1PrivateTests.executor": "Run",
++    "JUnit.Milestone1PublicTests.executor": "Run",
++    "JUnit.Milestone1PublicTests.testLoadresourcesValueTitansCorrectly.executor": "Run",
++    "Notification.DisplayName-DoNotAsk-Compiler": "Build finished",
++    "Notification.DoNotAsk-Compiler": "true",
++    "Repository.Attach.Annotations": "false",
++    "Repository.Attach.JavaDocs": "true",
++    "Repository.Attach.Sources": "false",
++    "RunOnceActivity.OpenProjectViewOnStart": "true",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
++    "git-widget-placeholder": "Ali-l",
++    "kotlin-language-version-configured": "true",
++    "last_opened_file_path": "C:/Users/abdel/OneDrive/Desktop/AttackOnTitanUtopia",
++    "node.js.detected.package.eslint": "true",
++    "node.js.detected.package.tslint": "true",
++    "node.js.selected.package.eslint": "(autodetect)",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "nodejs.jest.jest_package": "",
++    "nodejs_package_manager_path": "npm",
++    "project.structure.last.edited": "Modules",
++    "project.structure.proportion": "0.15",
++    "project.structure.side.proportion": "0.2",
++    "settings.editor.selected.configurable": "preferences.pluginManager",
++    "vue.rearranger.settings.migration": "true"
+   }
+-}</component>
++}]]></component>
    <component name="RecentsManager">
      <key name="MoveFile.RECENT_KEYS">
-+      <recent name="C:\Users\abdel\OneDrive\Desktop\AttackOnTitanUtopia\src\game\tests" />
        <recent name="C:\Users\abdel\OneDrive\Desktop\AttackOnTitanUtopia\src" />
--      <recent name="C:\Users\abdel\OneDrive\Desktop\AttackOnTitanUtopia\src\game\tests" />
-       <recent name="C:\Users\abdel\OneDrive\Desktop\Milestone 1\src\game\tests" />
-     </key>
+@@ -316,7 +315,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1712134620778</updated>
+     </task>
+-    <option name="localTasksCounter" value="19" />
++    <task id="LOCAL-00019" summary="m2 1">
++      <option name="closed" value="true" />
++      <created>1713377936812</created>
++      <option name="number" value="00019" />
++      <option name="presentableId" value="LOCAL-00019" />
++      <option name="project" value="LOCAL" />
++      <updated>1713377936812</updated>
++    </task>
++    <option name="localTasksCounter" value="20" />
+     <servers />
    </component>
+   <component name="TypeScriptGeneratedFilesManager">

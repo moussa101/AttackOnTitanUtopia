@@ -1,6 +1,13 @@
 package game.engine.weapons;
+import java.util.HashMap;
 
+import game.engine.dataloader.DataLoader;
 import game.engine.weapons.factory.WeaponFactory;
+
+import java.io.IOException;
+
+import static game.engine.dataloader.DataLoader.readWeaponRegistry;
+
 
 public class WeaponRegistry {
     private final int code;
@@ -9,6 +16,7 @@ public class WeaponRegistry {
     private String name;
     private int minRange;
     private int maxRange;
+    public DataLoader x = new DataLoader();
 
     public WeaponRegistry(int code, int price) {
         this.code = code;
@@ -56,6 +64,23 @@ public class WeaponRegistry {
     public int getMaxRange() {
         return maxRange;
     }
+    public Weapon buildWeapon(){
+        switch (code){
+            case 1:
+                return new PiercingCannon(getDamage());
+
+            case 2:
+                return new SniperCannon(getDamage());
+
+            case 3:
+                return new VolleySpreadCannon(getDamage(), getMinRange() ,getMaxRange() );
+
+            case 4:
+                return new WallTrap(getDamage());
+        }
+    }
+
+
 
 
 }
