@@ -1,0 +1,29 @@
+Index: src/game/engine/weapons/WeaponRegistry.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package game.engine.weapons;\r\nimport java.util.HashMap;\r\n\r\nimport game.engine.dataloader.DataLoader;\r\nimport game.engine.weapons.factory.WeaponFactory;\r\n\r\nimport java.io.IOException;\r\n\r\nimport static game.engine.dataloader.DataLoader.readWeaponRegistry;\r\n\r\n\r\npublic class WeaponRegistry {\r\n    private final int code;\r\n    private final int price;\r\n    private int damage;\r\n    private String name;\r\n    private int minRange;\r\n    private int maxRange;\r\n    public DataLoader x = new DataLoader();\r\n\r\n    public WeaponRegistry(int code, int price) {\r\n        this.code = code;\r\n        this.price = price;\r\n    }\r\n\r\n    public WeaponRegistry(int code, int price, int damage, String name) {\r\n        this.code = code;\r\n        this.price = price;\r\n        this.damage = damage;\r\n        this.name = name;\r\n    }\r\n\r\n    public WeaponRegistry(int code, int price, int damage, String name, int minRange, int maxRange) {\r\n        this.code = code;\r\n        this.price = price;\r\n        this.damage = damage;\r\n        this.name = name;\r\n        this.minRange = minRange;\r\n        this.maxRange = maxRange;\r\n    }\r\n\r\n    public int getCode() {\r\n        return code;\r\n    }\r\n\r\n    public int getPrice() {\r\n        return price;\r\n    }\r\n\r\n    public int getDamage() {\r\n        return damage;\r\n    }\r\n\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public int getMinRange() {\r\n        return minRange;\r\n    }\r\n\r\n\r\n    public int getMaxRange() {\r\n        return maxRange;\r\n    }\r\n    public Weapon buildWeapon(){\r\n        switch (code){\r\n            case 1:\r\n                return new PiercingCannon(getDamage());\r\n\r\n            case 2:\r\n                return new SniperCannon(getDamage());\r\n\r\n            case 3:\r\n                return new VolleySpreadCannon(getDamage(), getMinRange() ,getMaxRange() );\r\n\r\n            case 4:\r\n                return new WallTrap(getDamage());\r\n\r\n\r\n        }\r\n    }\r\n\r\n\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/game/engine/weapons/WeaponRegistry.java b/src/game/engine/weapons/WeaponRegistry.java
+--- a/src/game/engine/weapons/WeaponRegistry.java	(revision 083e5e95a91a62d9148d91153d782cd8ac085462)
++++ b/src/game/engine/weapons/WeaponRegistry.java	(date 1713477763179)
+@@ -65,7 +65,7 @@
+         return maxRange;
+     }
+     public Weapon buildWeapon(){
+-        switch (code){
++        switch (getCode()){
+             case 1:
+                 return new PiercingCannon(getDamage());
+ 
+@@ -78,8 +78,8 @@
+             case 4:
+                 return new WallTrap(getDamage());
+ 
+-
+         }
++        return a;
+     }
+ 
+ 
