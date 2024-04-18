@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="m2 1">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/interfaces/Mobil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/interfaces/Mobil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/titans/TitanRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/titans/TitanRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/weapons/WeaponRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/weapons/WeaponRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/tests/Milestone2PublicTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/tests/Milestone2PublicTests.java" afterDir="false" />
-    </list>
+    <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="m2 1" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,7 +36,7 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Moussa" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -354,10 +347,10 @@
     <MESSAGE value="i" />
     <MESSAGE value="mfinal" />
     <MESSAGE value="m2" />
-    <MESSAGE value="m2 intial" />
     <MESSAGE value="m1 correction" />
     <MESSAGE value="m2 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="m2 1" />
+    <MESSAGE value="m2 intial" />
+    <option name="LAST_COMMIT_MESSAGE" value="m2 intial" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
