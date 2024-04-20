@@ -46,11 +46,57 @@ public class Lane implements Comparable<Lane>{
         return weapons;
     }
     public boolean isLaneLost(){
-        if (this.laneWall.getCurrentHealth()==0){
+        if (this.laneWall.getCurrentHealth()<=0){
             return true;
         }
         else {
             return false;
         }
     }
+    public void updateLaneDangerLevel(){
+        int sum=0;
+        for (Titan titan : titans){
+            dangerLevel += titan.getDangerLevel();
+  }
+}
+    public void moveLaneTitans(){
+        for(Titan t: titans){
+            if(!(t.hasReachedTarget())){
+                t.move();
+            }
+        }
+        PriorityQueue<Titan> temp =new PriorityQueue<>();
+        while(!(titans.isEmpty())){
+
+            temp.add(titans.poll());
+        }
+
+        while(!temp.isEmpty())titans.add(temp.poll());
+    }
+    public int performLaneTitansAttacks() {
+        int totalDamage = 0;
+       for (Titan t :titans){
+           if(t.hasReachedTarget()){
+              totalDamage += t.attack(laneWall);
+           }
+       }
+       return totalDamage;
+    }
+    public int performLaneWeaponsAttacks(){
+        int sum =0;
+        for (Weapon weapon: weapons){
+         sum+=weapon.turnAttack(titans);
+        }
+        return sum;
+    }
+
+    public void addTitan(Titan titan){
+        titans.add(titan);
+    }
+    public void addWeapon(Weapon weapon){
+        weapons.add(weapon);
+    }
+
+
+
 }

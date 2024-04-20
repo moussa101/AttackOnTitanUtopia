@@ -18,6 +18,6 @@ abstract public class Weapon {
     public int getDamage() {
         return baseDamage;
     }
-    abstract int turnAttack(PriorityQueue<Titan> laneTitans);
+    public abstract int turnAttack(PriorityQueue<Titan> laneTitans);
 
 }

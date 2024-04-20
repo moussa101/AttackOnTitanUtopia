@@ -188,8 +188,7 @@ public class Battle {
          return sum;
     }
     private void finalizeTurns(){
-        numberOfTurns++;
-
+       setNumberOfTurns(getNumberOfTurns()+1);
         if (numberOfTurns<15){
            setBattlePhase(BattlePhase.EARLY);
         }

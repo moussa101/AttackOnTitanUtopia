@@ -31,5 +31,17 @@ public class WeaponFactory {
         }
 
 }
+public void addWeaponToShop(int code, int price){
+        WeaponRegistry a = new WeaponRegistry(code,price);
+        weaponShop.put(code,a);
+}
+   public void addWeaponToShop(int code, int price, int damage, String name){
+        WeaponRegistry a = new WeaponRegistry(code,price,damage,name);
+        weaponShop.put(code,a);
+   }
+   public void addWeaponToShop(int code, int price, int damage, String name, int minRange, int maxRange){
+        WeaponRegistry a = new WeaponRegistry(code,price,damage,name,minRange,maxRange);
+        weaponShop.put(code,a);
+   }
 
 }
