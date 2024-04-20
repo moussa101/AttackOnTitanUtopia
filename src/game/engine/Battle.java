@@ -11,6 +11,8 @@ import game.engine.exceptions.InsufficientResourcesException;
 import game.engine.exceptions.InvalidLaneException;
 import game.engine.lanes.Lane;
 import game.engine.titans.*;
+import game.engine.weapons.Weapon;
+import game.engine.weapons.WeaponRegistry;
 import game.engine.weapons.factory.WeaponFactory;
 
 public class Battle {
@@ -134,85 +136,34 @@ public class Battle {
     }
 
     public void refillApproachingTitans() {
-        int[][] a = PHASES_APPROACHING_TITANS;
-        if (getBattlePhase() == BattlePhase.EARLY) {
-            for (int i = 0; i < a[1].length; i++) {
-                Titan b = null;
-                switch (a[1][i]) {
-                    case 1:
-                        b = new PureTitan(1, 100, 15, titanSpawnDistance, 10, 10, 1);
-                        break;
-
-                    case 2:
-                        b = new AbnormalTitan(2, 100, 20, titanSpawnDistance, 15, 15, 2);
-                        break;
-
-                    case 3:
-                        b = new ArmoredTitan(3, 200, 85, titanSpawnDistance, 10, 30, 3);
-                        break;
-
-                    case 4:
-                        b = new ColossalTitan(4, 1000, 100, titanSpawnDistance, 5, 60, 4);
-                        break;
-
-                }
-                approachingTitans.add(b);
-            }
-
-        } else if (getBattlePhase() == BattlePhase.GRUMBLING) {
-            for (int i = 0; i < a[2].length; i++) {
-                Titan b = null;
-                switch (a[2][i]) {
-                    case 1:
-                        b = new PureTitan(1, 100, 15, titanSpawnDistance, 10, 10, 1);
-                        break;
-
-                    case 2:
-                        b = new AbnormalTitan(2, 100, 20, titanSpawnDistance, 15, 15, 2);
-                        break;
-
-                    case 3:
-                        b = new ArmoredTitan(3, 200, 85, titanSpawnDistance, 10, 30, 3);
-                        break;
-
-                    case 4:
-                        b = new ColossalTitan(4, 1000, 100, titanSpawnDistance, 5, 60, 4);
-                        break;
-
-                }
-                approachingTitans.add(b);
-            }
-
-        } else {
-            for (int i = 0; i < a[3].length; i++) {
-                Titan b = null;
-                switch (a[2][i]) {
-                    case 1:
-                        b = new PureTitan(1, 100, 15, titanSpawnDistance, 10, 10, 1);
-                        break;
-
-                    case 2:
-                        b = new AbnormalTitan(2, 100, 20, titanSpawnDistance, 15, 15, 2);
-                        break;
-
-                    case 3:
-                        b = new ArmoredTitan(3, 200, 85, titanSpawnDistance, 10, 30, 3);
-                        break;
-
-                    case 4:
-                        b = new ColossalTitan(4, 1000, 100, titanSpawnDistance, 5, 60, 4);
-                        break;
-
-                }
-                approachingTitans.add(b);
+        int[][] a = getPHASES_APPROACHING_TITANS();
+        if (getBattlePhase().equals(BattlePhase.EARLY)){
+            for (int i = 0; i <a[1].length ; i++) {
 
             }
 
         }
+        else if (getBattlePhase().equals(BattlePhase.INTENSE)) {
+            for (int i = 0; i < a[2].length; i++) {
+
+            }
+
+        } else if (getBattlePhase().equals(BattlePhase.GRUMBLING)) {
+            for (int i = 0; i < a[3].length; i++) {
+
+            }
+
+        }
+
     }
 
+
     public void purchaseWeapon(int weaponCode, Lane lane) throws InsufficientResourcesException, InvalidLaneException {
-        if (!lane.isLaneLost()) {
+        if (lane.isLaneLost()) {
+               throw new InvalidLaneException("Weapons can only be added to active lanes");
+        }
+        else {
+
 
         }
 
@@ -237,18 +188,19 @@ public class Battle {
          return sum;
     }
     private void finalizeTurns(){
+        numberOfTurns++;
+
         if (numberOfTurns<15){
            setBattlePhase(BattlePhase.EARLY);
         }
         else if (numberOfTurns<30) {
             setBattlePhase(BattlePhase.INTENSE);
         }
-        else if (numberOfTurns>30 && numberOfTurns%5==0){
+        else if (numberOfTurns>=30){
             setBattlePhase(BattlePhase.GRUMBLING);
-            setNumberOfTitansPerTurn(getNumberOfTurns()*2);
-        }
-        else  {
-            setBattlePhase(BattlePhase.GRUMBLING);
+            if(numberOfTurns%5==0){
+                setNumberOfTitansPerTurn(getNumberOfTitansPerTurn()*2);
+            }
         }
 
     }
@@ -259,5 +211,5 @@ public class Battle {
                 }
             }
         return true;
-        }
+    }
     }

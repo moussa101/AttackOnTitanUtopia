@@ -1,6 +1,8 @@
 package game.engine.titans;
 
-public class ColossalTitan extends Titan{
+import game.engine.interfaces.Mobil;
+
+public class ColossalTitan extends Titan {
     public final static int TITAN_CODE = 4;
 
 
@@ -12,5 +14,10 @@ public class ColossalTitan extends Titan{
     public void setDistance(int distance) {
         super.setDistance(distance);
         super.setSpeed(getSpeed()+1);
+    }
+
+    @Override
+    public boolean move() {
+        return super.move();
     }
 }

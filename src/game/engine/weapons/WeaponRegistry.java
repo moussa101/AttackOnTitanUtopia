@@ -67,13 +67,13 @@ public class WeaponRegistry {
     public Weapon buildWeapon(){
         Weapon a;
         switch (getCode()){
-            case 1 : a = new PiercingCannon(getDamage());
+            case 1 : a = new PiercingCannon(getDamage());break;
 
-            case 2 : a = new SniperCannon(getDamage());
+            case 2 : a = new SniperCannon(getDamage());break;
 
-            case 3 : a = new VolleySpreadCannon(getDamage(),getMinRange(),getMaxRange());
+            case 3 : a = new VolleySpreadCannon(getDamage(),getMinRange(),getMaxRange());break;
 
-            case 4 : a = new WallTrap(getDamage());
+            case 4 : a = new WallTrap(getDamage()); break;
             default:
                 a = null;
         }
