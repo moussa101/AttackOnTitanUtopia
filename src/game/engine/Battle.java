@@ -231,19 +231,15 @@ public class Battle {
         int resources = 0;
         ArrayList<Lane> Lanes = new ArrayList<>();
         ArrayList<Lane> lanesToRemove = new ArrayList<>();
-
         for (Lane lane : lanes) {
             if (!lane.isLaneLost()) {
-                int initialWallHealth = WALL_BASE_HEALTH;
                 int resourcesGained = lane.performLaneTitansAttacks();
                 if (lane.isLaneLost()) {
                     lanesToRemove.add(lane);
-                    resourcesGained += initialWallHealth;
                 }
                 resources += resourcesGained;
             }
         }
-
         // Remove lanes marked for removal
         lanes.removeAll(lanesToRemove);
         // Add remaining lanes back to original list
