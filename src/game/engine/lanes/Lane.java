@@ -5,6 +5,7 @@ import game.engine.titans.Titan;
 import game.engine.weapons.Weapon;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class Lane implements Comparable<Lane>{
@@ -54,47 +55,50 @@ public class Lane implements Comparable<Lane>{
         }
     }
     public void updateLaneDangerLevel(){
-        int sum=0;
+        int sum =0;
         for (Titan titan : titans){
-            dangerLevel += titan.getDangerLevel();
+            sum += titan.getDangerLevel();
   }
+        setDangerLevel(sum);
 }
     public void moveLaneTitans(){
         for(Titan t: titans){
-            if(!(t.hasReachedTarget())){
-                t.move();
-            }
+            t.move();
         }
-        PriorityQueue<Titan> temp =new PriorityQueue<>();
-        while(!(titans.isEmpty())){
-
-            temp.add(titans.poll());
-        }
-
+        PriorityQueue<Titan>temp=new PriorityQueue<>();
+        while(!titans.isEmpty())temp.add(titans.poll());
         while(!temp.isEmpty())titans.add(temp.poll());
     }
+
     public int performLaneTitansAttacks() {
-        int totalDamage = 0;
-       for (Titan t :titans){
-           if(t.hasReachedTarget()){
-              totalDamage += t.attack(laneWall);
-           }
-       }
-       return totalDamage;
+        int resourcesGathered  = 0;
+        for (Titan t : titans) {
+            if (t.hasReachedTarget()&&!this.isLaneLost()) {
+                int damage = t.attack(laneWall);
+                resourcesGathered  += damage;
+            }
+        }
+        return resourcesGathered ;
     }
     public int performLaneWeaponsAttacks(){
         int sum =0;
         for (Weapon weapon: weapons){
-         sum+=weapon.turnAttack(titans);
+            if (!this.isLaneLost()){
+                sum+=weapon.turnAttack(titans);
+            }
         }
         return sum;
     }
 
     public void addTitan(Titan titan){
-        titans.add(titan);
+        if (titan!=null){
+            titans.add(titan);
+        }
     }
     public void addWeapon(Weapon weapon){
-        weapons.add(weapon);
+        if (weapon!=null){
+            weapons.add(weapon);
+        }
     }
 
 

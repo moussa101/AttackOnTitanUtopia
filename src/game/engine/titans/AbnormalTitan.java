@@ -16,7 +16,7 @@ public class AbnormalTitan extends Titan{
         if (!target.isDefeated()){
             return target.takeDamage(getDamage());
         }
-        return 0;
+        return -1;
     }
 }
 

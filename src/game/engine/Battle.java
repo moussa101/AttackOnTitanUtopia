@@ -7,12 +7,14 @@ import java.util.PriorityQueue;
 
 import game.engine.base.Wall;
 import game.engine.dataloader.DataLoader;
+import game.engine.exceptions.GameActionException;
 import game.engine.exceptions.InsufficientResourcesException;
 import game.engine.exceptions.InvalidLaneException;
 import game.engine.lanes.Lane;
 import game.engine.titans.*;
 import game.engine.weapons.Weapon;
 import game.engine.weapons.WeaponRegistry;
+import game.engine.weapons.factory.FactoryResponse;
 import game.engine.weapons.factory.WeaponFactory;
 
 public class Battle {
@@ -136,56 +138,132 @@ public class Battle {
     }
 
     public void refillApproachingTitans() {
-        int[][] a = getPHASES_APPROACHING_TITANS();
-        if (getBattlePhase().equals(BattlePhase.EARLY)){
-            for (int i = 0; i <a[1].length ; i++) {
+        if (approachingTitans.isEmpty()) {
+
+            int[][] a = getPHASES_APPROACHING_TITANS();
+            if (getBattlePhase().equals(BattlePhase.EARLY)) {
+                for (int i = 0; i < a[0].length; i++) {
+                    TitanRegistry b = getTitansArchives().get(a[0][i]);
+                    approachingTitans.add(b.spawnTitan(getTitanSpawnDistance()));
+                }
+
+            } else if (getBattlePhase().equals(BattlePhase.INTENSE)) {
+                for (int i = 0; i < a[1].length; i++) {
+                    TitanRegistry b = getTitansArchives().get(a[1][i]);
+                    approachingTitans.add(b.spawnTitan(getTitanSpawnDistance()));
+
+                }
+
+            } else if (getBattlePhase().equals(BattlePhase.GRUMBLING)) {
+                for (int i = 0; i < a[2].length; i++) {
+                    TitanRegistry b = getTitansArchives().get(a[2][i]);
+                    approachingTitans.add(b.spawnTitan(getTitanSpawnDistance()));
+
+                }
 
             }
 
         }
-        else if (getBattlePhase().equals(BattlePhase.INTENSE)) {
-            for (int i = 0; i < a[2].length; i++) {
-
-            }
-
-        } else if (getBattlePhase().equals(BattlePhase.GRUMBLING)) {
-            for (int i = 0; i < a[3].length; i++) {
-
-            }
-
-        }
-
     }
 
 
     public void purchaseWeapon(int weaponCode, Lane lane) throws InsufficientResourcesException, InvalidLaneException {
-        if (lane.isLaneLost()) {
+        if (lane.isLaneLost()||!lanes.contains(lane)|| lane==null) {
                throw new InvalidLaneException("Weapons can only be added to active lanes");
         }
         else {
-
+                WeaponFactory a = getWeaponFactory();
+                    FactoryResponse b = a.buyWeapon(resourcesGathered,weaponCode);
+                    Weapon c = b.getWeapon();
+                    setResourcesGathered(b.getRemainingResources());
+                    lane.addWeapon(c);
+                    passTurn();
 
         }
 
+    }
+    public void passTurn(){
+        performTurn();
+    }
+    public Lane LeastDangerousLane(PriorityQueue<Lane> a) {
+        for (int i = 0; i <lanes.size() ; i++) {
+            if (lanes.peek().isLaneLost()){
+                lanes.remove();
+            }
+        }
+        return lanes.peek();
+    }
+
+    private void addTurnTitansToLane(){
+        if (approachingTitans.isEmpty()){
+            refillApproachingTitans();
+        }
+
+        for (int i = 0; i < numberOfTitansPerTurn; i++) {
+            if (approachingTitans.isEmpty()){
+                refillApproachingTitans();
+            }
+            Lane leastDanger = LeastDangerousLane(lanes);
+            leastDanger.addTitan(approachingTitans.get(0));
+            approachingTitans.remove(0);
+
+        }
     }
 
     private void moveTitans() {
         for (Lane lane : lanes) {
-            if (!(lane.isLaneLost())) {
-                for (Titan titan : lane.getTitans()) {
-                    titan.move();
-                }
+            lane.moveLaneTitans();
             }
         }
-    }
-    private int performWeaponsAttacks(){
-        int sum =0;
+    private int performWeaponsAttacks() {
+        int sum = 0;
+        lanes.removeIf(Lane::isLaneLost);
         for (Lane lane : lanes) {
-            if (!(lane.isLaneLost())) {
-                sum+= lane.getLaneWall().takeDamage(performWeaponsAttacks());
+                sum += lane.performLaneWeaponsAttacks();
+
+        }
+        lanes.removeIf(Lane::isLaneLost);
+        setResourcesGathered(resourcesGathered+sum);
+        score+=sum;
+        return sum;
+    }
+    private int performTitansAttacks() {
+        int resources = 0;
+        ArrayList<Lane> Lanes = new ArrayList<>();
+        ArrayList<Lane> lanesToRemove = new ArrayList<>();
+
+        for (Lane lane : lanes) {
+            if (!lane.isLaneLost()) {
+                int initialWallHealth = WALL_BASE_HEALTH;
+                int resourcesGained = lane.performLaneTitansAttacks();
+                if (lane.isLaneLost()) {
+                    lanesToRemove.add(lane);
+                    resourcesGained += initialWallHealth;
                 }
+                resources += resourcesGained;
             }
-         return sum;
+        }
+
+        // Remove lanes marked for removal
+        lanes.removeAll(lanesToRemove);
+        // Add remaining lanes back to original list
+        lanes.addAll(Lanes);
+
+        return resources;
+    }
+
+    private void updateLanesDangerLevels() {
+        ArrayList<Lane> remainingLanes = new ArrayList<>(lanes.size());
+
+        for (Lane lane : lanes) {
+            if (!lane.isLaneLost()) {
+                lane.updateLaneDangerLevel();
+                remainingLanes.add(lane);
+            }
+        }
+
+        lanes.removeAll(lanes);// Add the remaining lanes back to the original list without clearing it
+        lanes.addAll(remainingLanes);
     }
     private void finalizeTurns(){
        setNumberOfTurns(getNumberOfTurns()+1);
@@ -197,11 +275,25 @@ public class Battle {
         }
         else if (numberOfTurns>=30){
             setBattlePhase(BattlePhase.GRUMBLING);
-            if(numberOfTurns%5==0){
+            if(numberOfTurns%5==0&&numberOfTurns>30){
                 setNumberOfTitansPerTurn(getNumberOfTitansPerTurn()*2);
             }
         }
 
+    }
+
+
+
+    private void performTurn(){
+        if (!(isGameOver())){
+            moveTitans();
+            getBattlePhase();
+            performWeaponsAttacks();
+            performTitansAttacks();
+            addTurnTitansToLane();
+            updateLanesDangerLevels();
+            finalizeTurns();
+        }
     }
     public boolean isGameOver(){
         for (Lane lane : lanes) {

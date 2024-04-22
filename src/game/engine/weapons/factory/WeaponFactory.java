@@ -26,7 +26,6 @@ public class WeaponFactory {
         else{
             int remainingResources = resources - Weaponprice;
             WeaponRegistry a = weaponShop.get(weaponCode);
-
             return new FactoryResponse(a.buildWeapon(), remainingResources);
         }
 
