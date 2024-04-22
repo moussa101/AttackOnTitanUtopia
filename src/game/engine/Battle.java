@@ -239,6 +239,7 @@ public class Battle {
                 }
                 resources += resourcesGained;
             }
+
         }
         // Remove lanes marked for removal
         lanes.removeAll(lanesToRemove);
