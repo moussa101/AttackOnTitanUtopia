@@ -8,11 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/engine/Battle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/Battle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/engine/lanes/Lane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/lanes/Lane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/titans/AbnormalTitan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/titans/AbnormalTitan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/weapons/PiercingCannon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/weapons/PiercingCannon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/weapons/Weapon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/weapons/Weapon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/weapons/factory/WeaponFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/weapons/factory/WeaponFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/titans.csv" beforeDir="false" afterPath="$PROJECT_DIR$/titans.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,7 +196,7 @@
       <workItem from="1713719426856" duration="12309000" />
       <workItem from="1713777452729" duration="2548000" />
       <workItem from="1713780552900" duration="321000" />
-      <workItem from="1713785336225" duration="3614000" />
+      <workItem from="1713785336225" duration="4236000" />
     </task>
     <task id="LOCAL-00001" summary="i">
       <option name="closed" value="true" />
@@ -379,7 +374,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713643284793</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="m2 intial">
+      <option name="closed" value="true" />
+      <created>1713789216553</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1713789216553</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

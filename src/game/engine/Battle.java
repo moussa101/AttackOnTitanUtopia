@@ -248,7 +248,6 @@ public class Battle {
         lanes.removeAll(lanesToRemove);
         // Add remaining lanes back to original list
         lanes.addAll(Lanes);
-
         return resources;
     }
 

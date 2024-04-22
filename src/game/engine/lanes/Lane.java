@@ -73,9 +73,9 @@ public class Lane implements Comparable<Lane>{
     public int performLaneTitansAttacks() {
         int resourcesGathered  = 0;
         for (Titan t : titans) {
-            if (t.hasReachedTarget()&&!this.isLaneLost()) {
+            if (t.hasReachedTarget()) {
                 int damage = t.attack(laneWall);
-                resourcesGathered  += damage;
+                resourcesGathered+= damage;
             }
         }
         return resourcesGathered ;
