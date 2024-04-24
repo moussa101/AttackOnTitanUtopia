@@ -220,7 +220,6 @@ public class Battle {
         lanes.removeIf(Lane::isLaneLost);
         for (Lane lane : lanes) {
                 sum += lane.performLaneWeaponsAttacks();
-
         }
         lanes.removeIf(Lane::isLaneLost);
         setResourcesGathered(resourcesGathered+sum);
@@ -241,9 +240,7 @@ public class Battle {
             }
 
         }
-        // Remove lanes marked for removal
         lanes.removeAll(lanesToRemove);
-        // Add remaining lanes back to original list
         lanes.addAll(Lanes);
         return resources;
     }
@@ -258,7 +255,7 @@ public class Battle {
             }
         }
 
-        lanes.removeAll(lanes);// Add the remaining lanes back to the original list without clearing it
+        lanes.removeAll(lanes);
         lanes.addAll(remainingLanes);
     }
     private void finalizeTurns(){
@@ -283,7 +280,6 @@ public class Battle {
     private void performTurn(){
         if (!(isGameOver())){
             moveTitans();
-            getBattlePhase();
             performWeaponsAttacks();
             performTitansAttacks();
             addTurnTitansToLane();

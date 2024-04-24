@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="m2 intial">
+    <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="m2 final">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/engine/Battle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/Battle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -194,7 +195,8 @@
       <workItem from="1713719426856" duration="12309000" />
       <workItem from="1713777452729" duration="2548000" />
       <workItem from="1713780552900" duration="321000" />
-      <workItem from="1713785336225" duration="4538000" />
+      <workItem from="1713785336225" duration="4597000" />
+      <workItem from="1713805951361" duration="103000" />
     </task>
     <task id="LOCAL-00001" summary="i">
       <option name="closed" value="true" />
@@ -388,7 +390,23 @@
       <option name="project" value="LOCAL" />
       <updated>1713789656974</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="m2 intial">
+      <option name="closed" value="true" />
+      <created>1713789919345</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1713789919345</updated>
+    </task>
+    <task id="LOCAL-00026" summary="m2 final">
+      <option name="closed" value="true" />
+      <created>1713789948457</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1713789948457</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -413,7 +431,8 @@
     <MESSAGE value="m1 correction" />
     <MESSAGE value="m2 1" />
     <MESSAGE value="m2 intial" />
-    <option name="LAST_COMMIT_MESSAGE" value="m2 intial" />
+    <MESSAGE value="m2 final" />
+    <option name="LAST_COMMIT_MESSAGE" value="m2 final" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

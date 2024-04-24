@@ -16,22 +16,24 @@ public class PiercingCannon extends Weapon {
     @Override
     public int turnAttack(PriorityQueue<Titan> laneTitans) {
         int resourcesGained = 0;
-        ArrayList<Titan> remainingTitans = new ArrayList<>(5); // Initialize a new list for remaining titans
+        ArrayList<Titan> remainingTitans = new ArrayList<>(5);
 
         for (int i = 0; i < 5 && !laneTitans.isEmpty(); i++) {
-            Titan titan = laneTitans.poll(); // Retrieve and remove the titan from the laneTitans queue
+            Titan titan = laneTitans.poll();
+
 
             if (titan != null) {
-                int resources = titan.takeDamage(getDamage()); // Apply damage to the titan and get resources
+                int resources = titan.takeDamage(getDamage());
+
                 if (resources > 0) {
-                    resourcesGained += resources; // Accumulate resources gained
+                    resourcesGained += resources;
                 }
+
                 if (!titan.isDefeated())
-                    remainingTitans.add(titan); // Add the titan back to the remainingTitans list if not defeated
+                    remainingTitans.add(titan);
             }
         }
-
-        laneTitans.addAll(remainingTitans); // Add remaining titans back to the original queue
+        laneTitans.addAll(remainingTitans);
         return resourcesGained;
     }
 
