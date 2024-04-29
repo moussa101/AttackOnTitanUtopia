@@ -168,7 +168,7 @@ public class Battle {
 
 
     public void purchaseWeapon(int weaponCode, Lane lane) throws InsufficientResourcesException, InvalidLaneException {
-        if (lane.isLaneLost()||!lanes.contains(lane)|| lane==null) {
+        if (lane.isLaneLost() || !lanes.contains(lane)) {
                throw new InvalidLaneException("Weapons can only be added to active lanes");
         }
         else {
@@ -177,8 +177,7 @@ public class Battle {
                     Weapon c = b.getWeapon();
                     setResourcesGathered(b.getRemainingResources());
                     lane.addWeapon(c);
-                    passTurn();
-
+                    performTurn();
         }
 
     }
