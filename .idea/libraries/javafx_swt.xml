@@ -1,0 +1,31 @@
+<component name="libraryTable">
+  <library name="javafx-swt">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib/javafx-swt.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib/javafx.base.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib/javafx.controls.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib/javafx.fxml.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib/javafx.graphics.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib/javafx.media.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib/javafx.swing.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib/javafx.web.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <NATIVE>
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-22.0.1 2 copy/lib" />
+    </NATIVE>
+    <SOURCES />
+  </library>
+</component>

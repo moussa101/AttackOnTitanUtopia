@@ -1,21 +1,20 @@
 package game.engine;
 
+import game.engine.base.Wall;
+import game.engine.dataloader.DataLoader;
+import game.engine.exceptions.InsufficientResourcesException;
+import game.engine.exceptions.InvalidLaneException;
+import game.engine.lanes.Lane;
+import game.engine.titans.Titan;
+import game.engine.titans.TitanRegistry;
+import game.engine.weapons.Weapon;
+import game.engine.weapons.factory.FactoryResponse;
+import game.engine.weapons.factory.WeaponFactory;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
-
-import game.engine.base.Wall;
-import game.engine.dataloader.DataLoader;
-import game.engine.exceptions.GameActionException;
-import game.engine.exceptions.InsufficientResourcesException;
-import game.engine.exceptions.InvalidLaneException;
-import game.engine.lanes.Lane;
-import game.engine.titans.*;
-import game.engine.weapons.Weapon;
-import game.engine.weapons.WeaponRegistry;
-import game.engine.weapons.factory.FactoryResponse;
-import game.engine.weapons.factory.WeaponFactory;
 
 public class Battle {
 
@@ -294,4 +293,5 @@ public class Battle {
             }
         return true;
     }
+    
     }
