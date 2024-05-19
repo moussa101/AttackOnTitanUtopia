@@ -1,0 +1,18 @@
+.root{
+    -fx-background-image: url("Backgrounds/gameover.png");
+    -fx-background-size: 600px 400px;
+    -fx-background-position: center;
+}
+
+.label-s1{
+    -fx-font-scale: 40px;
+    -fx-font-family: "Arial";
+
+}
+.label-s2{
+    -fx-font-scale: 18px;
+}
+.label{
+    -fx-text-fill: white;
+}
+

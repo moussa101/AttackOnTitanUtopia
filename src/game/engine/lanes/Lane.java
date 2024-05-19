@@ -1,106 +1,129 @@
 package game.engine.lanes;
 
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+
 import game.engine.base.Wall;
 import game.engine.titans.Titan;
 import game.engine.weapons.Weapon;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.PriorityQueue;
+public class Lane implements Comparable<Lane>
+{
+    private final Wall laneWall;
+    private int dangerLevel;
+    private final PriorityQueue<Titan> titans;
+    private final ArrayList<Weapon> weapons;
 
-public class Lane implements Comparable<Lane>{
-   private final Wall laneWall;
-   private int dangerLevel;
-   private final PriorityQueue<Titan> titans;
-   private final ArrayList<Weapon> weapons;
-
-    public Lane(Wall laneWall) {
-        dangerLevel =0;
+    public Lane(Wall laneWall)
+    {
+        super();
         this.laneWall = laneWall;
-        this.titans = new PriorityQueue<Titan>();
-        this.weapons = new ArrayList<Weapon>();
+        this.dangerLevel = 0;
+        this.titans = new PriorityQueue<>();
+        this.weapons = new ArrayList<>();
     }
 
-
-    @Override
-    public int compareTo(Lane o) {
-        return this.dangerLevel- o.dangerLevel;
+    public Wall getLaneWall()
+    {
+        return this.laneWall;
     }
 
-    public Wall getLaneWall() {
-        return laneWall;
+    public int getDangerLevel()
+    {
+        return this.dangerLevel;
     }
 
-    public int getDangerLevel() {
-        return dangerLevel;
-    }
-
-    public void setDangerLevel(int dangerLevel) {
+    public void setDangerLevel(int dangerLevel)
+    {
         this.dangerLevel = dangerLevel;
     }
 
-    public PriorityQueue<Titan> getTitans() {
-        return titans;
+    public PriorityQueue<Titan> getTitans()
+    {
+        return this.titans;
     }
 
-    public ArrayList<Weapon> getWeapons() {
-        return weapons;
-    }
-    public boolean isLaneLost(){
-        if (this.laneWall.getCurrentHealth()<=0){
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    public void updateLaneDangerLevel(){
-        int sum =0;
-        for (Titan titan : titans){
-            sum += titan.getDangerLevel();
-  }
-        setDangerLevel(sum);
-}
-    public void moveLaneTitans(){
-        for(Titan t: titans){
-            t.move();
-        }
-        PriorityQueue<Titan>temp=new PriorityQueue<>();
-        while(!titans.isEmpty())temp.add(titans.poll());
-        while(!temp.isEmpty())titans.add(temp.poll());
+    public ArrayList<Weapon> getWeapons()
+    {
+        return this.weapons;
     }
 
-    public int performLaneTitansAttacks() {
-        int resourcesGathered  = 0;
-        for (Titan t : titans) {
-            if (t.hasReachedTarget()) {
-                int damage = t.attack(laneWall);
-                resourcesGathered+= damage;
+    @Override
+    public int compareTo(Lane o)
+    {
+        return this.dangerLevel - o.dangerLevel;
+    }
+
+    public void addTitan(Titan titan)
+    {
+        this.getTitans().add(titan);
+    }
+
+    public void addWeapon(Weapon weapon)
+    {
+        this.getWeapons().add(weapon);
+    }
+
+    public void moveLaneTitans()
+    {
+        ArrayList<Titan> tmp = new ArrayList<>();
+
+        for (Titan t : this.getTitans())
+        {
+            if (!t.hasReachedTarget())
+            {
+                t.move();
+                tmp.add(t);
+            }
+
+        }
+
+        this.getTitans().removeAll(tmp);
+        this.getTitans().addAll(tmp);
+    }
+
+    public int performLaneTitansAttacks()
+    {
+        int resourcesGathered = 0;
+
+        for (Titan t : this.getTitans())
+        {
+            if (t.hasReachedTarget())
+            {
+                resourcesGathered += t.attack(this.getLaneWall());
             }
         }
-        return resourcesGathered ;
-    }
-    public int performLaneWeaponsAttacks(){
-        int sum =0;
-        for (Weapon weapon: weapons){
-            if (!this.isLaneLost()){
-                sum+=weapon.turnAttack(titans);
-            }
-        }
-        return sum;
+
+        return resourcesGathered;
     }
 
-    public void addTitan(Titan titan){
-        if (titan!=null){
-            titans.add(titan);
+    public int performLaneWeaponsAttacks()
+    {
+        int resourcesGathered = 0;
+
+        for (Weapon w : this.getWeapons())
+        {
+            resourcesGathered += w.turnAttack(this.getTitans());
         }
-    }
-    public void addWeapon(Weapon weapon){
-        if (weapon!=null){
-            weapons.add(weapon);
-        }
+
+        return resourcesGathered;
     }
 
+    public boolean isLaneLost()
+    {
+        return this.getLaneWall().isDefeated();
+    }
 
+    public void updateLaneDangerLevel()
+    {
+        int newDanger = 0;
+
+        for (Titan t : this.getTitans())
+        {
+            newDanger += t.getDangerLevel();
+        }
+
+        this.setDangerLevel(newDanger);
+    }
 
 }

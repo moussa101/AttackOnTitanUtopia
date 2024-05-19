@@ -1,0 +1,19 @@
+.root {
+    -fx-background-image: url("Backgrounds/easy.png");
+    -fx-background-size: 1000px 800px;
+    -fx-background-position: center;
+}
+.label{
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+}
+.label-hs{
+    -fx-text-fill: #bd0a0a;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
+.label-cs{
+    -fx-text-fill: #148a1d;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}

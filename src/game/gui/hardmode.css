@@ -1,0 +1,19 @@
+.root {
+    -fx-background-image: url("Backgrounds/hard.png");
+    -fx-background-size: 1000px 800px;
+    -fx-background-position: center;
+}
+.label{
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+}
+.label-hs{
+    -fx-text-fill: #bc0202;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
+.label-cs{
+    -fx-text-fill: #20e830;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}

@@ -5,11 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="m2 final">
-      <change afterPath="$PROJECT_DIR$/Icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pxArt.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/gui/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AOT Images/Titans/1t.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AOT Images/Titans/2t.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AOT Images/Titans/3t.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AOT Images/Titans/4t.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AOT Images/weapons/dead.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AOT Images/weapons/download (3).jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AOT Images/weapons/eagle.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AOT Images/weapons/pier.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AOT Images/weapons/sniper.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AOT Images/weapons/vs.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/highscore.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/game/gui/Backgrounds/easy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/game/gui/Backgrounds/gameover.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/game/gui/Backgrounds/hard.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/game/gui/Backgrounds/veryhard.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/game/gui/Diffculty.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/game/gui/easymode.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/game/gui/gameover.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/game/gui/hardmode.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/game/gui/veryhardmode.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/gui/GUI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/AOT Images/Gicon&amp;Start/Icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pxArt.png" beforeDir="false" afterPath="$PROJECT_DIR$/AOT Images/Gicon&amp;Start/pxArt.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/Battle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/Battle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/engine/lanes/Lane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/lanes/Lane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/gui/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/gui/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,11 +44,12 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Enum" />
         <option value="JavaScript File" />
         <option value="package-info" />
         <option value="module-info" />
         <option value="FxmlFile" />
+        <option value="Enum" />
+        <option value="CSS File" />
         <option value="Class" />
       </list>
     </option>
@@ -79,52 +101,56 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.Battle.executor": "Run",
-    "Application.GUI.executor": "Run",
-    "Application.Main.executor": "Run",
-    "Application.WallTrap.executor": "Run",
-    "Application.WeaponShop.executor": "Run",
-    "Downloaded.Files.Path.Enabled": "true",
-    "JUnit.GameTest.executor": "Debug",
-    "JUnit.Milestone1PrivateTests.executor": "Run",
-    "JUnit.Milestone1PublicTests.executor": "Run",
-    "JUnit.Milestone1PublicTests.testLoadresourcesValueTitansCorrectly.executor": "Run",
-    "JUnit.Milestone2PrivateTests.executor": "Run",
-    "JUnit.Milestone2PublicTests.executor": "Run",
-    "Notification.DisplayName-DoNotAsk-Compiler": "Build finished",
-    "Notification.DoNotAsk-Compiler": "true",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "true",
-    "Repository.Attach.Sources": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/abdel/OneDrive/Desktop/AttackOnTitanUtopia - Copy",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs.jest.jest_package": "",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.Battle.executor&quot;: &quot;Run&quot;,
+    &quot;Application.GUI.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.WallTrap.executor&quot;: &quot;Run&quot;,
+    &quot;Application.WeaponShop.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;true&quot;,
+    &quot;JUnit.GameTest.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.Milestone1PrivateTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Milestone1PublicTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Milestone1PublicTests.testLoadresourcesValueTitansCorrectly.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Milestone2PrivateTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Milestone2PublicTests.executor&quot;: &quot;Run&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-Compiler&quot;: &quot;Build finished&quot;,
+    &quot;Notification.DoNotAsk-Compiler&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/abdelrhmanmoussa/IdeaProjects/AttackOnTitanUtopia/src&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs.jest.jest_package&quot;: &quot;&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src" />
-      <recent name="C:\Users\abdel\OneDrive\Desktop\AttackOnTitanUtopia\src\game\tests" />
-      <recent name="C:\Users\abdel\OneDrive\Desktop\AttackOnTitanUtopia\src" />
-      <recent name="C:\Users\abdel\OneDrive\Desktop\Milestone 1\src\game\tests" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/game/gui" />
+      <recent name="$PROJECT_DIR$/AOT Images/Backgrounds" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/AOT Images/weapons" />
+      <recent name="$PROJECT_DIR$/AOT Images/Gicon&amp;Start" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Main">
@@ -151,6 +177,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Milestone2PrivateTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="AttackOnTitanUtopia" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="Milestone2PrivateTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Milestone2PublicTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AttackOnTitanUtopia" />
       <option name="PACKAGE_NAME" value="" />
@@ -162,12 +197,14 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.Milestone2PrivateTests" />
       <item itemvalue="JUnit.Milestone1PrivateTests" />
       <item itemvalue="JUnit.Milestone2PublicTests" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.Milestone2PrivateTests" />
         <item itemvalue="JUnit.Milestone2PublicTests" />
         <item itemvalue="JUnit.Milestone1PrivateTests" />
       </list>
@@ -262,7 +299,10 @@
       <workItem from="1715532473170" duration="3502000" />
       <workItem from="1715595501972" duration="302000" />
       <workItem from="1715601652303" duration="3741000" />
-      <workItem from="1715622208600" duration="34339000" />
+      <workItem from="1715622208600" duration="62146000" />
+      <workItem from="1715885420702" duration="10250000" />
+      <workItem from="1716018607189" duration="24802000" />
+      <workItem from="1716140876007" duration="11637000" />
     </task>
     <task id="LOCAL-00001" summary="i">
       <option name="closed" value="true" />
@@ -504,7 +544,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715457924289</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="m2 final">
+      <option name="closed" value="true" />
+      <created>1715810503967</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1715810503967</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
