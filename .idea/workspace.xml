@@ -5,31 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1c87e088-18e9-4abb-96ea-684c7fa5d131" name="Changes" comment="m3 final">
-      <change afterPath="$PROJECT_DIR$/AOT Images/Titans/1t.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AOT Images/Titans/2t.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AOT Images/Titans/3t.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AOT Images/Titans/4t.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AOT Images/weapons/dead.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AOT Images/weapons/download (3).jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AOT Images/weapons/eagle.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AOT Images/weapons/pier.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AOT Images/weapons/sniper.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AOT Images/weapons/vs.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/highscore.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/gui/Backgrounds/easy.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/gui/Backgrounds/gameover.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/gui/Backgrounds/hard.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/gui/Backgrounds/veryhard.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/gui/Diffculty.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/gui/easymode.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/gui/gameover.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/gui/hardmode.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/gui/veryhardmode.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/AOT Images/Gicon&amp;Start/Icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pxArt.png" beforeDir="false" afterPath="$PROJECT_DIR$/AOT Images/Gicon&amp;Start/pxArt.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/Battle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/Battle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/engine/lanes/Lane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/engine/lanes/Lane.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/gui/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/gui/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -154,7 +130,7 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.Main">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="game.gui.Main" />
       <module name="AttackOnTitanUtopia" />
       <option name="VM_PARAMETERS" value="--module-path $USER_HOME$/Desktop/javafx-sdk-22.0.1/lib --add-modules=javafx.controls" />
@@ -203,7 +179,6 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.Milestone2PrivateTests" />
         <item itemvalue="JUnit.Milestone2PublicTests" />
         <item itemvalue="JUnit.Milestone1PrivateTests" />
@@ -302,7 +277,14 @@
       <workItem from="1715622208600" duration="62146000" />
       <workItem from="1715885420702" duration="10250000" />
       <workItem from="1716018607189" duration="24802000" />
-      <workItem from="1716140876007" duration="12188000" />
+      <workItem from="1716140876007" duration="12447000" />
+      <workItem from="1716232822995" duration="1716000" />
+      <workItem from="1716450345459" duration="216000" />
+      <workItem from="1716458776814" duration="18000" />
+      <workItem from="1716797255826" duration="637000" />
+      <workItem from="1716817043055" duration="779000" />
+      <workItem from="1716882231114" duration="3193000" />
+      <workItem from="1718301696050" duration="618000" />
     </task>
     <task id="LOCAL-00001" summary="i">
       <option name="closed" value="true" />
@@ -560,7 +542,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716153112806</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="m3 final">
+      <option name="closed" value="true" />
+      <created>1716153150189</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1716153150189</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -21,10 +21,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -151,7 +154,9 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
         weaponSpace.getChildren().add(button);
     }
-    private void insertImageToTitanStackPane(StackPane titanSpace, String imagePath, double x) {
+
+    // Assuming this method is in a class that extends Application or has access to a Stage
+    private void insertImageToTitanStackPane(StackPane titanSpace, String imagePath, double x, Titan t) {
         // Load the image
         Image image = new Image(imagePath);
 
@@ -163,14 +168,47 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         imageView.setFitHeight(60); // Adjust height as needed
 
         // Generate a random y-coordinate within the height of the StackPane
-        double randomY = (Math.random() * titanSpace.getHeight())-150;
+        double randomY = (Math.random() * titanSpace.getHeight()) - 150;
 
-        x = Math.min(x,800);
+        x = Math.min(x, 800);
         // Set the position of the image view within the StackPane
-        StackPane.setMargin(imageView, new Insets(randomY, 0, 0, x-130)); // Adjust margins as needed
-
-        // Add the image view to the StackPane
+        StackPane.setMargin(imageView, new Insets(randomY, 0, 0, x - 130));
         titanSpace.getChildren().add(imageView);
+
+        // Create a small window (Popup) to show on drag
+        Popup popup = new Popup();
+        VBox popupContent = new VBox();
+        Label healthLabel = new Label("Health = " + t.getCurrentHealth());
+        Label damageLabel = new Label("Damage = " + t.getDamage());
+        Label speedLabel = new Label("Speed = " + t.getSpeed());
+        popupContent.setStyle("-fx-background-color: #d6cdb2; -fx-padding: 10; -fx-border-color: black; -fx-text-fill: #090909");
+        popupContent.getChildren().addAll(healthLabel, damageLabel, speedLabel);
+        popupContent.setAlignment(Pos.CENTER_LEFT);
+        popup.getContent().add(popupContent);
+
+        // Event handler to show the popup when the image is dragged over
+        imageView.setOnMouseDragged(event -> {
+            if (!popup.isShowing()) {
+                popup.show(imageView, event.getScreenX(), event.getScreenY() + 100);
+            }
+            popup.setX(event.getScreenX());
+            popup.setY(event.getScreenY() + 10);
+        });
+
+        // Event handler to hide the popup when the mouse exits the image view
+        imageView.setOnMouseExited(event -> {
+            if (popup.isShowing()) {
+                popup.hide();
+            }
+        });
+
+        // Extend the range of the mouse drag to keep the popup open
+        imageView.addEventFilter(MouseEvent.MOUSE_MOVED, event -> {
+            if (popup.isShowing()) {
+                popup.setX(event.getScreenX());
+                popup.setY(event.getScreenY() + 10);
+            }
+        });
     }
 
 
@@ -301,7 +339,6 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         }
     }
     private void ReturntoMainMenu(){
-
 
         Stage Exit = new Stage();
         setIcon(Exit);
@@ -653,161 +690,197 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
     }
 
-    public void veryhardBattle(){
-            primaryStage.close();
-            BattleStage = new Stage();
-            setIcon(BattleStage);
-            BattleStage.setTitle("Battle - Very Hard");
+    public void veryhardBattle() {
+        primaryStage.close();
+        BattleStage = new Stage();
+        setIcon(BattleStage);
+        BattleStage.setTitle("Battle - Very Hard");
 
-            if (Cheats) {
-                try {
-                    battle = new Battle(1, 0, 800, 7, 75);
-                    showPopUp("Smart Ass", "No Cheats in Vey Hard mode ;)");
+        if (Cheats) {
+            try {
+                battle = new Battle(1, 0, 800, 7, 75);
+                showPopUp("Smart Ass", "No Cheats in Vey Hard mode ;)");
 
-                } catch (Exception e) {
-                    BattleStage.close();
-                    showError("Game Initialization Error please restart or try uninstalling the game");
-                }
+            } catch (Exception e) {
+                BattleStage.close();
+                showError("Game Initialization Error please restart or try uninstalling the game");
             }
-            else {
-                try {
-                    battle = new Battle(1, 0, 800, 7, 75);
+        } else {
+            try {
+                battle = new Battle(1, 0, 800, 7, 75);
 
-                } catch (Exception e) {
-                    BattleStage.close();
-                    showError("Game Initialization Error please restart or try uninstalling the game");
-                }
+            } catch (Exception e) {
+                BattleStage.close();
+                showError("Game Initialization Error please restart or try uninstalling the game");
             }
+        }
 
-            l1 = new Label("Current score :  "+battle.getScore());
-            l2 = new Label("Current turn :  "+battle.getNumberOfTurns());
-            l3 = new Label("Current phase :  "+battle.getBattlePhase());
-            l4 = new Label("Current Resources :  "+battle.getResourcesGathered());
-            HighScoreLabel = new Label("High Score : "+loadHighscore());
-            HighScoreLabel.getStyleClass().add("label-hs");
-            l1.getStyleClass().add("label-cs");
+        l1 = new Label("Current score :  " + battle.getScore());
+        l2 = new Label("Current turn :  " + battle.getNumberOfTurns());
+        l3 = new Label("Current phase :  " + battle.getBattlePhase());
+        l4 = new Label("Current Resources :  " + battle.getResourcesGathered());
+        HighScoreLabel = new Label("High Score : " + loadHighscore());
+        HighScoreLabel.getStyleClass().add("label-hs");
+        l1.getStyleClass().add("label-cs");
 
-            Button b = new Button("Weapon shop");
-            Button b1 = new Button("Exit game");
-            Button passTurnbutton = new Button("Pass turn");
-            Button Return = new Button("Return to main menu");
-            passTurnbutton.setPrefWidth(120);
-
-
-            b.setOnAction(actionEvent -> {
-                WeaponShop();
-            });
-
-            Return.setOnAction(actionEvent -> {
-                ReturntoMainMenu();
-            });
+        Button b = new Button("Weapon shop");
+        Button b1 = new Button("Exit game");
+        Button passTurnbutton = new Button("Pass turn");
+        Button Return = new Button("Return to main menu");
+        passTurnbutton.setPrefWidth(120);
 
 
-            passTurnbutton.setOnAction(actionEvent -> {
-                passTurn();
-            });
+        b.setOnAction(actionEvent -> {
+            WeaponShop();
+        });
 
-            b1.setOnAction(actionEvent -> {
-                Exit();
-            });
-
-
+        Return.setOnAction(actionEvent -> {
+            ReturntoMainMenu();
+        });
 
 
-            AnchorPane mainlayout = new AnchorPane();
-            HBox layout1 = new HBox(10);
-            layout1.getChildren().addAll(l1, l2, l3, l4, HighScoreLabel);
-            layout1.setAlignment(Pos.TOP_CENTER);
-            layout1.setSpacing(40);
-            mainlayout.getChildren().addAll(layout1);
+        passTurnbutton.setOnAction(actionEvent -> {
+            passTurn();
+        });
 
-            HBox layout2 = new HBox(10);
-            layout2.getChildren().addAll(passTurnbutton,b,Return);
-            layout2.setAlignment(Pos.BOTTOM_CENTER);
-            mainlayout.getChildren().addAll(layout2);
-
-            AnchorPane.setTopAnchor(layout1, 10.0);
-            AnchorPane.setLeftAnchor(layout1, 0.0);
-            AnchorPane.setRightAnchor(layout1, 0.0);
-
-            // Anchor layout2 to the bottom and center
-            AnchorPane.setBottomAnchor(layout2, 20.0);
-            AnchorPane.setLeftAnchor(layout2, 310.0);
-
-            // Creating and positioning WeaponSpace and TitanSpace
-            weaponSpaces = new VBox[7];
-            titanSpaces = new StackPane[7];
-
-            double verticalGap = 50; // Adjust the vertical gap between each VBox
+        b1.setOnAction(actionEvent -> {
+            Exit();
+        });
 
 
-            for (int i = 0; i < 7; i++) {
-                // Create VBox and Pane instances
-                VBox weaponSpace = new VBox(10);
-                Pane titanSpace = new StackPane();
-                titanSpace.setPrefSize(200, 400);
-                titanSpace.setPadding(new Insets(20));
+        AnchorPane mainlayout = new AnchorPane();
+        HBox layout1 = new HBox(10);
+        layout1.getChildren().addAll(l1, l2, l3, l4, HighScoreLabel);
+        layout1.setAlignment(Pos.TOP_CENTER);
+        layout1.setSpacing(40);
+        mainlayout.getChildren().addAll(layout1);
 
-                // Add VBox instances to the HBox
+        HBox layout2 = new HBox(10);
+        layout2.getChildren().addAll(passTurnbutton, b, Return);
+        layout2.setAlignment(Pos.BOTTOM_CENTER);
+        mainlayout.getChildren().addAll(layout2);
 
-                // Add VBox and Pane instances to arrays
-                weaponSpaces[i] = weaponSpace;
-                titanSpaces[i] = (StackPane)titanSpace;
-            }
+        AnchorPane.setTopAnchor(layout1, 10.0);
+        AnchorPane.setLeftAnchor(layout1, 0.0);
+        AnchorPane.setRightAnchor(layout1, 0.0);
+
+        // Anchor layout2 to the bottom and center
+        AnchorPane.setBottomAnchor(layout2, 20.0);
+        AnchorPane.setLeftAnchor(layout2, 310.0);
+
+        // Creating and positioning WeaponSpace and TitanSpace
+        weaponSpaces = new VBox[7];
+        titanSpaces = new StackPane[7];
+
+        double verticalGap = 50; // Adjust the vertical gap between each VBox
+
+
+        for (int i = 0; i < 7; i++) {
+            // Create VBox and Pane instances
+            VBox weaponSpace = new VBox(10);
+            Pane titanSpace = new StackPane();
+            titanSpace.setPrefSize(200, 400);
+            titanSpace.setPadding(new Insets(20));
+
+            // Add VBox instances to the HBox
+
+            // Add VBox and Pane instances to arrays
+            weaponSpaces[i] = weaponSpace;
+            titanSpaces[i] = (StackPane) titanSpace;
+        }
 
 // Add each StackPane from titanSpaces array to the main layout
-            double space = 30;
-            double increment = 30;
+        double space = 30;
+        double increment = 30;
 // Add each StackPane from titanSpaces array to the main layout
-            for (StackPane titanSpace : titanSpaces) {
-                mainlayout.getChildren().add(titanSpace);
-                AnchorPane.setLeftAnchor(titanSpace, 40.0);
-                AnchorPane.setTopAnchor(titanSpace, space);
-                space += increment;
-            }
-            space = 50;
-            increment = 100;
+        for (StackPane titanSpace : titanSpaces) {
+            mainlayout.getChildren().add(titanSpace);
+            AnchorPane.setLeftAnchor(titanSpace, 40.0);
+            AnchorPane.setTopAnchor(titanSpace, space);
+            space += increment;
+        }
+        space = 50;
+        increment = 100;
 
-            for (VBox box : weaponSpaces) {
-                box.setMaxSize(150, 150);
-                box.setMinSize(150, 150);
-                AnchorPane.setLeftAnchor(box, 40.0);
-                AnchorPane.setTopAnchor(box, space);
-                mainlayout.getChildren().add(box);
-                space += increment;  // Increment the space by the fixed value
-            }
-
-
-
-            // Creating and positioning laneInfo VBox
-            VBox laneInfo = new VBox(10);
-            AnchorPane.setTopAnchor(laneInfo, 100.0);
-            AnchorPane.setRightAnchor(laneInfo, 20.0);
-            laneInfo.setSpacing(25);
-
-            Info = new ArrayList<>();
-            for (int i = 0; i <battle.getOriginalLanes().size(); i++) {
-                Label a = new Label();
-                Info.add(a);
-            }
-
-            Object[] Lanes = battle.getLanes().toArray();
-
-            for (int i = 0; i < battle.getLanes().size(); i++) {
-                Lane s = (Lane)Lanes[i];
-                Info.get(i).setText("Danger : "+s.getDangerLevel()+"\n"+"Health : "+s.getLaneWall().getCurrentHealth()+"\n"+"Number of Titans : "+s.getTitans().size());
-            }
-            laneInfo.getChildren().addAll(Info);
-            mainlayout.getChildren().add(laneInfo);
-
-            Scene scene = new Scene(mainlayout, 1000, 800);
+        for (VBox box : weaponSpaces) {
+            box.setMaxSize(150, 150);
+            box.setMinSize(150, 150);
+            AnchorPane.setLeftAnchor(box, 40.0);
+            AnchorPane.setTopAnchor(box, space);
+            mainlayout.getChildren().add(box);
+            space += increment;  // Increment the space by the fixed value
+        }
 
 
-            BattleStage.setScene(scene);
-            scene.getStylesheets().add(getClass().getResource("veryhardmode.css").toExternalForm());
-            BattleStage.show();
+        // Creating and positioning laneInfo VBox
+        VBox laneInfo = new VBox(10);
+        AnchorPane.setTopAnchor(laneInfo, 100.0);
+        AnchorPane.setRightAnchor(laneInfo, 20.0);
+        laneInfo.setSpacing(25);
+
+        Info = new ArrayList<>();
+        for (int i = 0; i < battle.getOriginalLanes().size(); i++) {
+            Label a = new Label();
+            Info.add(a);
+        }
+
+        Object[] Lanes = battle.getLanes().toArray();
+
+        for (int i = 0; i < battle.getLanes().size(); i++) {
+            Lane s = (Lane) Lanes[i];
+            Info.get(i).setText("Danger : " + s.getDangerLevel() + "\n" + "Health : " + s.getLaneWall().getCurrentHealth() + "\n" + "Number of Titans : " + s.getTitans().size());
+        }
+        laneInfo.getChildren().addAll(Info);
+        mainlayout.getChildren().add(laneInfo);
+
+        Scene scene = new Scene(mainlayout, 1000, 800);
+
+
+        BattleStage.setScene(scene);
+        scene.getStylesheets().add(getClass().getResource("veryhardmode.css").toExternalForm());
+        BattleStage.show();
+        scene.setOnKeyTyped(actionEvent -> {
+            handleKeyTyped(actionEvent,scene);
+        });
 
     }
+
+
+        private void handleKeyTyped(KeyEvent event,Scene scene) {
+            // Check if the typed key is "SECRET"
+            if (event.getCharacter().equalsIgnoreCase("s")) {
+                // Begin checking for "ECRET"
+                event.consume(); // Consume the event to prevent printing "S" to the scene
+                scene.setOnKeyTyped(event1 -> {
+                    if (event1.getCharacter().equalsIgnoreCase("e")) {
+                        event1.consume();
+                        scene.setOnKeyTyped(event2 -> {
+                            if (event2.getCharacter().equalsIgnoreCase("c")) {
+                                event2.consume();
+                                scene.setOnKeyTyped(event3 -> {
+                                    if (event3.getCharacter().equalsIgnoreCase("r")) {
+                                        event3.consume();
+                                        scene.setOnKeyTyped(event4 -> {
+                                            if (event4.getCharacter().equalsIgnoreCase("e")) {
+                                                event4.consume();
+                                              scene.setOnKeyTyped(event5 -> {
+                                                  if (event5.getCharacter().equalsIgnoreCase("t")) {
+                                                      event5.consume();
+                                                      SecretEnding();
+                                                  }
+                                              });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        }
+
+
 
     private void passTurn(){
         try {
@@ -971,18 +1044,18 @@ public class Main extends Application implements EventHandler<ActionEvent> {
                 }
                for(Titan t : battle.getOriginalLanes().get(i).getTitans()){
                    if (t instanceof PureTitan){
-                       insertImageToTitanStackPane(titanSpaces[i],"file:AOT%20Images/Titans/3t.png",t.getDistance());
+                       insertImageToTitanStackPane(titanSpaces[i],"file:AOT%20Images/Titans/3t.png",t.getDistance(),t);
                    }
                    else if (t instanceof AbnormalTitan){
-                       insertImageToTitanStackPane(titanSpaces[i],"file:AOT%20Images/Titans/2t.png",t.getDistance());
+                       insertImageToTitanStackPane(titanSpaces[i],"file:AOT%20Images/Titans/2t.png",t.getDistance(),t);
 
                    }
                    else if (t instanceof ArmoredTitan){
-                       insertImageToTitanStackPane(titanSpaces[i],"file:AOT%20Images/Titans/4t.png",t.getDistance());
+                       insertImageToTitanStackPane(titanSpaces[i],"file:AOT%20Images/Titans/4t.png",t.getDistance(),t);
 
                    }
                    else if (t instanceof ColossalTitan){
-                       insertImageToTitanStackPane(titanSpaces[i],"file:AOT%20Images/Titans/1t.png",t.getDistance());
+                       insertImageToTitanStackPane(titanSpaces[i],"file:AOT%20Images/Titans/1t.png",t.getDistance(),t);
                    }
 
                }
@@ -1020,7 +1093,6 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         setIcon(secretStage); // Assuming setIcon is implemented elsewhere
         secretStage.setTitle("Secret Ending");
 
-        // Morse code message formatted as a paragraph
         String mcode =
                 "- .... .- -. -.- ... / ..-. --- .-. / .--. .-.. .- -.-- .. -. --. / - .... . / --. .- -- . / \n" +
                         ".. / .... --- .--. . / -.-- --- ..- / . -. .--- --- -.-- . -.. / .. / -.- -. --- .-- / - .... .- - / \n" +
@@ -1033,6 +1105,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
         // Button to copy the Morse code to clipboard
         Button copyButton = new Button("CopyCode");
+        copyButton.setAlignment(Pos.BOTTOM_CENTER);
         copyButton.setOnAction(event -> {
             final Clipboard clipboard = Clipboard.getSystemClipboard();
             final ClipboardContent content = new ClipboardContent();
@@ -1044,6 +1117,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(20));
         vbox.getChildren().addAll(endLabel, copyButton);
+        vbox.setSpacing(30);
 
         Scene scene = new Scene(vbox, 600, 400);
         secretStage.setScene(scene);
